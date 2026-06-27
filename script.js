@@ -379,7 +379,7 @@ async function consultarIA() {
     const titulo = document.getElementById('pregunta-titulo');
     
     titulo.innerText = "Buscando los Perfumes Ideales...";
-    container.innerHTML = '<div class="loader-ia" style="margin:20px auto; border:4px solid rgba(255,255,255,0.1); border-top:4px solid #E6C200; border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite;"></div>';
+    container.innerHTML = '<div class="loader-ia" style="margin:20px auto; border:4px solid rgba(255,255,255,0.1); border-top:4px solid var(--elite-gold); border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite;"></div>';
 
     const perfilSensorial = `
         Cliente ${respuestasUsuario.genero}, etapa ${respuestasUsuario.edad}. 
@@ -467,8 +467,12 @@ const styleBot = document.createElement('style');
 styleBot.innerHTML = `
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .btn-pregunta { 
-        background: rgba(255,255,255,0.05); 
-        border: 1px solid rgba(255,255,255,0.1); 
+        background-image:
+            linear-gradient(var(--elite-bg), var(--elite-bg)),
+            var(--elite-gold-gradient);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        border: 1px solid transparent;
         color: #e0e0e0; 
         padding: 10px 14px; 
         border-radius: 10px; 
@@ -482,9 +486,9 @@ styleBot.innerHTML = `
         font-family: inherit;
     }
     .btn-pregunta:hover { 
-        background: rgba(255,255,255,0.15); 
-        border-color: #E6C200;
-        color: #fff;
+        background: var(--elite-gold-gradient);
+        border-color: var(--elite-gold);
+        color: var(--elite-bg);
     }
 `;
 document.head.appendChild(styleBot);

@@ -17,6 +17,75 @@ body {
 
 :root {
     --elite-charcoal: #08090C;
+    --elite-bg: #08090C;
+    --elite-gold: #D8B35C;
+    --elite-gold-gradient: linear-gradient(90deg, #F6EBA6 0%, #D8B35C 52%, #A86A3E 100%);
+    --elite-gold-border: rgba(216, 179, 92, 0.24);
+    --elite-gold-border-strong: rgba(216, 179, 92, 0.52);
+    --elite-button-glass: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.055) 0%,
+        rgba(216, 179, 92, 0.035) 48%,
+        rgba(8, 9, 12, 0.42) 100%
+    );
+}
+
+.home-card,
+.home-testimonials-link,
+.home-advisor-cta,
+.home-advisor-quiz,
+.home-advisor-results,
+.home-advisor-option,
+.home-advisor-input,
+.home-advisor-card,
+.home-advisor-card button,
+.home-advisor-reset,
+.home-contact-card,
+.home-contact-button,
+.home-social-card,
+.btn-ia-search,
+.btn-testimonios,
+.btn-home-catalogo,
+.filtros-principales button,
+.btn-oro,
+.btn-seccion,
+.card,
+.card .btn-cotizar-perfume,
+.card-oro-full,
+.btn-cotizar-oro-full,
+#btnArriba {
+    border-color: transparent;
+    background-image:
+        linear-gradient(var(--elite-bg), var(--elite-bg)),
+        var(--elite-gold-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+/* Estado glass compartido: también cubre botones insertados por JavaScript. */
+:is(
+    button,
+    [role="button"],
+    .home-advisor-cta,
+    .home-advisor-reset,
+    .home-contact-button,
+    .home-testimonials-link,
+    .btn,
+    .btn-home-catalogo,
+    .btn-testimonios,
+    .btn-testimonios-oro,
+    .btn-regresar,
+    .btn-cotizar-oro-full
+):is(:hover, :active, .active, .selected, [aria-selected="true"], [aria-pressed="true"]) {
+    background: var(--elite-button-glass) !important;
+    background-image: var(--elite-button-glass) !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    border-color: rgba(216, 179, 92, 0.27) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(115%);
+    backdrop-filter: blur(12px) saturate(115%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.075),
+        0 7px 18px rgba(0, 0, 0, 0.18) !important;
 }
 
 header {
@@ -101,7 +170,7 @@ header {
 
 .home-kicker {
     margin: 0 0 12px;
-    color: #E6C200;
+    color: var(--elite-gold);
     font-family: 'Cinzel', Georgia, serif;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -135,9 +204,8 @@ header {
 .home-card {
     min-height: 88px;
     border-radius: 16px;
-    border: 1px solid rgba(230, 194, 0, 0.44);
-    background: linear-gradient(145deg, rgba(36,39,43,0.22), rgba(8,9,12,0.16));
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -150,8 +218,8 @@ header {
 
 .home-card:hover {
     transform: translateY(-4px);
-    border-color: #E6C200;
-    background: linear-gradient(145deg, rgba(48,52,56,0.32), rgba(8,9,12,0.22));
+    border-color: transparent;
+    color: #ffffff;
 }
 
 .home-card-label {
@@ -221,7 +289,7 @@ header {
 
 .home-testimonials h2 {
     margin: 0;
-    color: #E6C200;
+    color: var(--elite-gold);
     font-size: clamp(32px, 4.4vw, 58px);
     line-height: 0.96;
     letter-spacing: 0.06em;
@@ -239,12 +307,12 @@ header {
     display: inline-flex;
     margin-top: 12px;
     padding: 10px 18px;
-    border: 1px solid rgba(230, 194, 0, 0.38);
+    border: 1px solid transparent;
     border-radius: 999px;
-    color: #E6C200;
+    color: var(--elite-gold);
     text-decoration: none;
     font-weight: 800;
-    background: rgba(8, 9, 12, 0.86);
+    background-color: var(--elite-bg);
 }
 
 .home-years {
@@ -262,15 +330,19 @@ header {
 .home-year-card {
     min-width: 0;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid transparent;
     border-radius: 22px;
-    background: rgba(8, 9, 12, 0.92);
+    background-image:
+        linear-gradient(var(--elite-bg), var(--elite-bg)),
+        var(--elite-gold-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     padding: 12px 14px 14px;
 }
 
 .home-year-card h3 {
     margin: 0 0 8px;
-    color: #E6C200;
+    color: var(--elite-gold);
     font-size: clamp(20px, 2vw, 28px);
     letter-spacing: 0.1em;
 }
@@ -331,8 +403,8 @@ header {
     inset: 0;
     z-index: 2;
     background:
-        radial-gradient(circle at 50% 42%, rgba(230,194,0,0.09), transparent 28%),
-        radial-gradient(circle at 14% 76%, rgba(230,194,0,0.12), transparent 24%),
+        radial-gradient(circle at 50% 42%, rgba(216,179,92,0.09), transparent 28%),
+        radial-gradient(circle at 14% 76%, rgba(216,179,92,0.12), transparent 24%),
         linear-gradient(115deg, rgba(8,9,12,0.70), rgba(8,9,12,0.36));
 }
 
@@ -402,9 +474,8 @@ header {
     margin: 28px auto 10px;
     padding: 22px 28px;
     border-radius: 22px;
-    border: 1px solid rgba(230,194,0,0.52);
-    background: linear-gradient(145deg, rgba(36,39,43,0.28), rgba(8,9,12,0.20));
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     font-family: 'Cinzel', Georgia, serif;
     font-size: clamp(20px, 3vw, 32px);
     letter-spacing: 0.14em;
@@ -416,8 +487,9 @@ header {
 }
 
 .home-advisor-cta:hover {
-    border-color: #E6C200;
-    background: linear-gradient(145deg, rgba(48,52,56,0.34), rgba(8,9,12,0.26));
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 .home-advisor-note {
@@ -431,8 +503,7 @@ header {
     margin: 22px auto 0;
     padding: 22px;
     border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(8,9,12,0.72);
+    border: 1px solid transparent;
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 }
@@ -441,7 +512,7 @@ header {
     max-height: min(52vh, 520px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    scrollbar-color: rgba(230,194,0,0.62) rgba(255,255,255,0.08);
+    scrollbar-color: rgba(216,179,92,0.62) rgba(255,255,255,0.08);
     scrollbar-width: thin;
 }
 
@@ -470,12 +541,12 @@ header {
 }
 
 .home-advisor-results::-webkit-scrollbar-thumb {
-    background: rgba(230,194,0,0.62);
+    background: rgba(216,179,92,0.62);
     border-radius: 999px;
 }
 
 .home-advisor-quiz::-webkit-scrollbar-thumb {
-    background: rgba(230,194,0,0.62);
+    background: rgba(216,179,92,0.62);
     border-radius: 999px;
 }
 
@@ -513,7 +584,7 @@ header {
 .home-advisor-progress {
     height: 4px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #E6C200 var(--advisor-progress, 0%), rgba(255,255,255,0.10) var(--advisor-progress, 0%));
+    background: linear-gradient(90deg, #F6EBA6 0%, var(--elite-gold) var(--advisor-progress, 0%), rgba(255,255,255,0.10) var(--advisor-progress, 0%));
     margin-bottom: 18px;
 }
 
@@ -533,16 +604,16 @@ header {
 .home-advisor-option {
     min-height: 58px;
     border-radius: 16px;
-    border: 1px solid rgba(230,194,0,0.30);
-    background: rgba(8,9,12,0.72);
+    border: 1px solid transparent;
     color: #ffffff;
     font-weight: 800;
     cursor: pointer;
 }
 
 .home-advisor-option:hover {
-    color: #E6C200;
-    border-color: rgba(230,194,0,0.72);
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 .home-advisor-input {
@@ -550,8 +621,7 @@ header {
     min-height: 56px;
     box-sizing: border-box;
     border-radius: 16px;
-    border: 1px solid rgba(230,194,0,0.30);
-    background: rgba(8,9,12,0.82);
+    border: 1px solid transparent;
     color: #ffffff;
     padding: 0 16px;
     font: inherit;
@@ -559,7 +629,7 @@ header {
 }
 
 .home-advisor-input:focus {
-    border-color: rgba(230,194,0,0.72);
+    border-color: var(--elite-gold-border-strong);
 }
 
 .home-advisor-continue {
@@ -579,8 +649,7 @@ header {
     gap: 12px;
     padding: 14px;
     border-radius: 20px;
-    border: 1px solid rgba(230,194,0,0.22);
-    background: rgba(8,9,12,0.82);
+    border: 1px solid transparent;
 }
 
 .home-advisor-card img {
@@ -602,9 +671,8 @@ header {
 .home-advisor-card button,
 .home-advisor-reset {
     border-radius: 14px;
-    border: 1px solid rgba(230,194,0,0.44);
-    background: rgba(8,9,12,0.82);
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     padding: 12px 14px;
     font-weight: 900;
     cursor: pointer;
@@ -612,6 +680,13 @@ header {
 
 .home-advisor-reset {
     margin-top: 16px;
+}
+
+.home-advisor-card button:hover,
+.home-advisor-reset:hover {
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 .home-contact {
@@ -639,7 +714,7 @@ header {
     inset: 0;
     z-index: 2;
     background:
-        radial-gradient(circle at 50% 36%, rgba(230,194,0,0.12), transparent 30%),
+        radial-gradient(circle at 50% 36%, rgba(216,179,92,0.12), transparent 30%),
         linear-gradient(115deg, rgba(8,9,12,0.78), rgba(8,9,12,0.54));
 }
 
@@ -697,8 +772,7 @@ header {
     padding: 34px;
     box-sizing: border-box;
     border-radius: 24px;
-    border: 1px solid rgba(230,194,0,0.30);
-    background: rgba(8,9,12,0.76);
+    border: 1px solid transparent;
     box-shadow: 0 24px 62px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.08);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
@@ -709,9 +783,8 @@ header {
 .home-contact-button {
     min-height: 74px;
     border-radius: 18px;
-    border: 1px solid rgba(230,194,0,0.44);
-    background: rgba(8,9,12,0.82);
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -725,21 +798,20 @@ header {
 
 .home-contact-button:hover {
     transform: translateY(-3px);
-    border-color: #E6C200;
-    background: rgba(12,13,18,0.92);
-    color: #ffffff;
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 .home-contact-button-waze {
-    background: rgba(8,9,12,0.82);
-    border-color: rgba(230,194,0,0.44);
-    color: #E6C200;
+    border-color: transparent;
+    color: var(--elite-gold);
 }
 
 .home-contact-button-waze:hover {
-    background: rgba(12,13,18,0.92);
-    border-color: #E6C200;
-    color: #ffffff;
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 .home-contact-icon {
@@ -764,9 +836,7 @@ header {
     padding: 14px;
     box-sizing: border-box;
     border-radius: 18px;
-    border: 1px solid rgba(230,194,0,0.26);
-    background:
-        linear-gradient(145deg, rgba(36,39,43,0.30), rgba(8,9,12,0.38));
+    border: 1px solid transparent;
     color: #ffffff;
     text-decoration: none;
     display: flex;
@@ -779,9 +849,7 @@ header {
 
 .home-social-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(230,194,0,0.78);
-    background:
-        linear-gradient(145deg, rgba(48,52,56,0.38), rgba(8,9,12,0.44));
+    border-color: transparent;
 }
 
 .home-social-mark {
@@ -825,7 +893,7 @@ header {
     margin: 10px 0 35px 0;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #E6C200;
+    color: var(--elite-gold);
     font-family: 'Cinzel', Georgia, serif;
     font-weight: 400;
 }
@@ -868,9 +936,8 @@ header {
 
 .btn-ia-search {
     flex: 1;
-    background: rgba(8, 9, 12, 0.86);
     color: #ffffff;
-    border: 1px solid rgba(230, 194, 0, 0.4);
+    border: 1px solid transparent;
     padding: 12px 15px;
     border-radius: 50px;
     font-size: 13px;
@@ -883,9 +950,9 @@ header {
 }
 
 .btn-ia-search:hover {
-    background: #E6C200;
-    color: #08090C;
-    border-color: #E6C200;
+    background: var(--elite-gold-gradient);
+    color: var(--elite-bg);
+    border-color: var(--elite-gold-border-strong);
     box-shadow: none;
 }
 
@@ -902,9 +969,8 @@ header {
 
 .filtros-principales button {
     padding: 10px 22px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
     border-radius: 25px;
-    background: rgba(8, 9, 12, 0.86);
     color: #ffffff;
     cursor: pointer;
     backdrop-filter: blur(10px);
@@ -915,24 +981,23 @@ header {
 }
 
 .filtros-principales button.active {
-    background: #E6C200;
-    color: #08090C;
-    border-color: #E6C200;
+    background: var(--elite-gold-gradient);
+    color: var(--elite-bg);
+    border-color: var(--elite-gold-border-strong);
 }
 
-.tipo-oro.active, .gen-oro.active, .cat-oro.active {
-    background: #E6C200 !important;
-    color: #10171f !important;
-    border-color: #E6C200 !important;
+.tipo-oro.active, .gen-oro.active, .cat-oro.active, .cat-oro-especial.active {
+    background: var(--elite-gold-gradient) !important;
+    color: var(--elite-bg) !important;
+    border-color: var(--elite-gold-border-strong) !important;
     box-shadow: none;
 }
 
 .btn-oro, .btn-seccion {
     padding: 10px 22px;
-    border: 2px solid #E6C200 !important;
+    border: 2px solid transparent !important;
     border-radius: 25px;
-    background: transparent !important;
-    color: #E6C200 !important;
+    color: var(--elite-gold) !important;
     cursor: pointer;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -1022,11 +1087,10 @@ header {
     justify-content: center;
     margin-top: 8px;
     padding: 12px 26px;
-    background: #08090C;
-    color: #E6C200;
+    color: var(--elite-gold);
     text-decoration: none;
     border-radius: 999px;
-    border: 1px solid rgba(230, 194, 0, 0.38);
+    border: 1px solid transparent;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     font-weight: 800;
@@ -1036,7 +1100,7 @@ header {
 }
 
 .btn-testimonios:hover {
-    background: rgba(12, 13, 18, 0.96);
+    color: #ffffff;
 }
 
 .btn-home-catalogo {
@@ -1046,9 +1110,8 @@ header {
     margin: 0 auto 16px;
     padding: 10px 18px;
     border-radius: 999px;
-    border: 1px solid rgba(230, 194, 0, 0.34);
-    background: rgba(8, 9, 12, 0.62);
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     text-decoration: none;
     font-weight: 800;
     letter-spacing: .04em;
@@ -1057,8 +1120,7 @@ header {
 }
 
 .btn-home-catalogo:hover {
-    background: rgba(12, 13, 18, 0.82);
-    border-color: #E6C200;
+    border-color: transparent;
 }
 
 /* ==========================================================================
@@ -1075,8 +1137,7 @@ header {
 }
 
 .card {
-    background: rgba(8, 9, 12, 0.92);
-    border: 1px solid rgba(230, 194, 0, 0.22);
+    border: 1px solid transparent;
     border-radius: 24px;
     padding: 0;
     text-align: center;
@@ -1136,8 +1197,8 @@ header {
 }
 
 .btn {
-    background: #E6C200;
-    color: #08090C;
+    background: var(--elite-gold-gradient);
+    color: var(--elite-bg);
     border: none;
     padding: 14px 20px;
     border-radius: 12px;
@@ -1148,9 +1209,8 @@ header {
 
 .card .btn-cotizar-perfume {
     margin-top: auto;
-    background: #08090C;
-    color: #E6C200;
-    border: 1px solid rgba(230, 194, 0, 0.44);
+    color: var(--elite-gold);
+    border: 1px solid transparent;
     border-radius: 14px;
     padding: 16px;
     font-size: 1rem;
@@ -1159,8 +1219,9 @@ header {
 }
 
 .card .btn-cotizar-perfume:hover {
-    background: rgba(12, 13, 18, 0.96);
-    border-color: #E6C200;
+    background: var(--elite-gold-gradient);
+    border-color: var(--elite-gold-border-strong);
+    color: var(--elite-bg);
 }
 
 /* ==========================================================================
@@ -1177,8 +1238,7 @@ header {
 }
 
 .card-oro-full {
-    background: rgba(8, 9, 12, 0.82);
-    border: 1px solid rgba(230, 194, 0, 0.3);
+    border: 1px solid transparent;
     border-radius: 15px;
     overflow: hidden;
     backdrop-filter: blur(10px);
@@ -1190,7 +1250,7 @@ header {
 
 .header-card-oro {
     background: rgba(12, 13, 18, 0.96);
-    color: #E6C200;
+    color: var(--elite-gold);
     text-align: center;
     padding: 8px;
     font-size: 0.75em;
@@ -1206,8 +1266,8 @@ header {
 .info-card-oro p { color: #aaa; font-size: 0.9em; margin-bottom: 20px; white-space: pre-line; }
 
 .btn-cotizar-oro-full {
-    background: #E6C200;
-    color: #000;
+    background: var(--elite-gold-gradient);
+    color: var(--elite-bg);
     border: none;
     padding: 15px;
     border-radius: 50px;
@@ -1264,9 +1324,13 @@ header {
     display: block;
     width: 90%; 
     max-width: 450px; 
-    background: rgba(8, 9, 12, 0.86);
+    background-image:
+        linear-gradient(var(--elite-bg), var(--elite-bg)),
+        var(--elite-gold-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
     padding: 20px;
     margin: 0 auto 15px auto; /* Centradas horizontalmente con margen abajo */
     border-radius: 12px;
@@ -1382,9 +1446,8 @@ header {
     z-index: 1000;
     cursor: pointer;
     border-radius: 50%;
-    border: 1px solid rgba(230, 194, 0, 0.36);
-    background: #08090C;
-    color: #E6C200;
+    border: 1px solid transparent;
+    color: var(--elite-gold);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: none;

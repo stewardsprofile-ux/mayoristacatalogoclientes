@@ -12,17 +12,19 @@
     <style>
         .btn-regresar { position: absolute; top: 20px; left: 20px; background: rgba(8, 9, 12, 0.82); color: rgba(255, 255, 255, 0.68); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; transition: all 0.3s ease; z-index: 10; max-width: 220px; line-height: 1.2; }
         .btn-regresar:hover { background: rgba(12, 13, 18, 0.96); color: #ffffff; border-color: rgba(255, 255, 255, 0.3); }
-        .titulo-oro { color: #E6C200 !important; font-family: 'Cinzel', Georgia, serif; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 20px; }
+        .titulo-oro { color: var(--elite-gold) !important; font-family: 'Cinzel', Georgia, serif; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 20px; }
         
         /* Estilos de botones activos para todas las categorías de filtro */
-        .tipo-oro.active, .gen-oro.active, .cat-oro.active { 
-            background: #E6C200 !important; 
-            color: #08090C !important; 
-            border-color: #E6C200 !important; 
-            box-shadow: none; 
+        .tipo-oro.active, .gen-oro.active, .cat-oro.active, .cat-oro-especial.active {
+            background: var(--elite-button-glass) !important;
+            color: rgba(255, 255, 255, 0.94) !important;
+            border-color: rgba(216, 179, 92, 0.27) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.075), 0 7px 18px rgba(0, 0, 0, 0.18) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            backdrop-filter: blur(12px) saturate(115%);
         }
 
-        .filtros-principales button { border: 1px solid rgba(230, 194, 0, 0.3); transition: all 0.3s ease; cursor: pointer; border-radius: 20px; padding: 8px 15px; background: transparent; color: white; margin: 3px; font-size: 13px; }
+        .filtros-principales button { border: 1px solid transparent; transition: all 0.3s ease; cursor: pointer; border-radius: 20px; padding: 8px 15px; color: white; margin: 3px; font-size: 13px; }
         .btn-testimonios-oro {
             display: inline-flex;
             align-items: center;
@@ -30,16 +32,20 @@
             margin-top: 18px;
             padding: 12px 26px;
             border-radius: 999px;
-            border: 1px solid rgba(230, 194, 0, 0.38);
-            background: #08090C;
-            color: #E6C200;
+            border: 1px solid transparent;
+            background-image:
+                linear-gradient(var(--elite-bg), var(--elite-bg)),
+                var(--elite-gold-gradient);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            color: var(--elite-gold);
             text-decoration: none;
             font-weight: 800;
             letter-spacing: .04em;
             text-transform: none;
             backdrop-filter: blur(10px);
         }
-        .btn-testimonios-oro:hover { background: rgba(12, 13, 18, 0.96); }
+        .btn-testimonios-oro:hover { color: #ffffff; }
         header { position: relative; text-align: center; padding: 40px 10px; }
 
         /* Catalogo en grid amplio */
@@ -54,8 +60,12 @@
         }
 
         .card-oro-full {
-            background: #08090C;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid transparent;
+            background-image:
+                linear-gradient(var(--elite-bg), var(--elite-bg)),
+                var(--elite-gold-gradient);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
             border-radius: 24px;
             overflow: hidden;
             display: flex;
@@ -67,7 +77,7 @@
 
         .header-card-oro {
             background: #0C0D12;
-            color: #E6C200;
+            color: var(--elite-gold);
             text-align: center;
             padding: 12px 14px;
             font-size: 0.82em;
@@ -91,9 +101,13 @@
         }
 
         .btn-cotizar-oro-full {
-            background: rgba(8, 9, 12, 0.86);
-            color: #E6C200;
-            border: 1px solid rgba(230, 194, 0, 0.32);
+            background-image:
+                linear-gradient(var(--elite-bg), var(--elite-bg)),
+                var(--elite-gold-gradient);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            color: var(--elite-gold);
+            border: 1px solid transparent;
             backdrop-filter: blur(10px);
             padding: 16px;
             border-radius: 14px;
@@ -104,7 +118,9 @@
         }
 
         .btn-cotizar-oro-full:hover {
-            background: rgba(12, 13, 18, 0.96);
+            background: var(--elite-gold-gradient);
+            color: var(--elite-bg);
+            border-color: var(--elite-gold-border-strong);
         }
 
         @media (max-width: 1100px) {
@@ -209,10 +225,10 @@
 </div>
 
 <div id="visorImagen" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; justify-content:center; align-items:center;">
-    <img id="imagenGrande" src="" style="max-width:95%; max-height:95%; border: 2px solid #E6C200; border-radius: 10px;">
+    <img id="imagenGrande" src="" style="max-width:95%; max-height:95%; border: 2px solid var(--elite-gold); border-radius: 10px;">
 </div>
 
-<button id="btnArribaOro" title="Ir arriba" style="display:none; position:fixed; right:25px; bottom:25px; width:52px; height:52px; border-radius:50%; border:1px solid rgba(230, 194, 0, 0.34); background:#08090C; color:#E6C200; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:none; font-size:20px; font-weight:800; cursor:pointer; z-index:1001;">↑</button>
+<button id="btnArribaOro" title="Ir arriba" style="display:none; position:fixed; right:25px; bottom:25px; width:52px; height:52px; border-radius:50%; border:1px solid transparent; background-image:linear-gradient(var(--elite-bg), var(--elite-bg)), var(--elite-gold-gradient); background-origin:border-box; background-clip:padding-box, border-box; color:var(--elite-gold); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:none; font-size:20px; font-weight:800; cursor:pointer; z-index:1001;">↑</button>
 
 <script src="script_oro.js" defer></script>
 </body>
