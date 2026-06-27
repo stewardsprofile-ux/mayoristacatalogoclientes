@@ -204,7 +204,9 @@ header {
 .home-card {
     min-height: 88px;
     border-radius: 16px;
-    border: 1px solid transparent;
+    border: 1px solid rgba(216, 179, 92, 0.42);
+    background-image: none;
+    background-color: rgba(8, 9, 12, 0.1);
     color: var(--elite-gold);
     text-decoration: none;
     display: flex;
