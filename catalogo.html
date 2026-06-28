@@ -10,47 +10,83 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="catalog-page">
 
-<header>
-    <a href="/" class="btn-home-catalogo">Pagina Principal</a>
-    <img class="logo" src="assets/logo.png" alt="Elite Parfums">
-    <h1 class="titulo">ELITE PARFUMS</h1>
+<header class="catalog-hero">
+    <nav class="catalog-quick-links" aria-label="Accesos rápidos">
+        <a href="https://wa.me/50662104761" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/social/whatsapp.png" alt=""></a>
+        <a href="https://www.instagram.com/elitecostarica" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/social/instagram.png" alt=""></a>
+        <a href="/" aria-label="Página principal">♟</a>
+    </nav>
+
+    <a href="/" class="catalog-brand" aria-label="Volver a la página principal">
+        <img class="logo" src="assets/logo.png" alt="Elite Parfums">
+        <h1 class="titulo">ELITE PARFUMS</h1>
+        <span>Tu perfume ideal está a un clic!</span>
+    </a>
+
+    <div class="catalog-metrics" aria-label="Resumen del catálogo">
+        <span>♙ <strong id="catalogMetricProducts">1,947</strong> perfumes</span>
+        <span>⌁ <strong>130+</strong> marcas</span>
+        <span>▱ Envíos a todo Costa Rica</span>
+    </div>
 
     <div class="search-container">
         <div class="search-box-wrapper">
-            <input id="search" type="search" placeholder="Buscar perfume...">
-            <button onclick="abrirBot()" class="btn-ia-search">✨ Encuentra mi Perfume</button>
+            <input id="search" type="search" placeholder="Buscar perfume, marca o inspiración...">
+            <button type="button" class="catalog-search-submit" aria-label="Buscar">⌕ <span>Buscar</span></button>
         </div>
     </div>
 
-    <div class="filtros-principales">
-        <button class="tipo active" data-tipo="Todos">Todos</button>
-        <button class="tipo" data-tipo="Arabes">Árabes</button>
-        <button class="categoria" data-cat="Hombre">Hombre</button>
-        <button class="categoria" data-cat="Mujer">Mujer</button>
-        <button class="categoria" data-cat="Unisex">Unisex</button>
-        <button class="tipo" data-tipo="Estuches">Estuches</button>
+    <div class="filtros-principales catalog-filter-grid">
+        <button class="tipo active" data-tipo="Todos"><span class="filter-icon">▦</span>Todos</button>
+        <button class="categoria" data-cat="Hombre"><span class="filter-icon">♙</span>Hombre</button>
+        <button class="categoria" data-cat="Mujer"><span class="filter-icon">♙</span>Mujer</button>
+        <button class="tipo" data-tipo="Arabes"><span class="filter-icon">◉</span>Árabes</button>
+        <button class="categoria" data-cat="Unisex"><span class="filter-icon">♧</span>Unisex</button>
+        <button class="tipo" data-tipo="Estuches"><span class="filter-icon">▣</span>Estuches</button>
+        <button type="button" class="catalog-news" onclick="abrirBot()"><span class="filter-icon">★</span>Encuentra mi Perfume <small>Nuevo</small></button>
     </div>
 
+    <h2 class="catalog-subtitle"><span></span>Marcas destacadas<span></span></h2>
     <div class="contenedor-marcas-scroll">
-        <button class="flecha-scroll" onclick="scrollMarcas(-200)">❮</button>
+        <button class="flecha-scroll" onclick="scrollMarcas(-400)" aria-label="Marcas anteriores">‹</button>
         <div id="contenedorMarcas" class="grid-marcas"></div>
-        <button class="flecha-scroll" onclick="scrollMarcas(200)">❯</button>
+        <button class="flecha-scroll" onclick="scrollMarcas(400)" aria-label="Marcas siguientes">›</button>
     </div>
 
-    <div class="seccion-oro-container">
-        <button class="btn-seccion" onclick="irAOro()">
-            <span>ORO 10K</span>
-        </button>
-    </div>
-
-    <div class="testimonios-container">
-        <a href="/testimonios" class="btn-testimonios">Clientes Satisfechos</a>
+    <div class="catalog-feature-grid">
+        <a href="/oro" class="catalog-feature catalog-feature-gold">
+            <span class="catalog-gold-title">
+                <small>Joyería</small>
+                <strong>Oro 10K</strong>
+            </span>
+            <span class="catalog-feature-copy catalog-gold-details">
+                <em>Calidad que perdura,<br>lujo que te acompaña.</em>
+                <b>Ver colección&nbsp; →</b>
+            </span>
+        </a>
+        <a href="/testimonios" class="catalog-feature catalog-feature-clients">
+            <span class="catalog-stars">★★★★★</span>
+            <strong>Más de 500 clientes<br>satisfechos</strong>
+            <em>Confianza, calidad y servicio<br>que nos respaldan.</em>
+            <b>Ver testimonios&nbsp; →</b>
+        </a>
     </div>
 </header>
 
-<div id="catalogo"></div>
+<div id="catalogFeaturedSections">
+    <section class="catalog-product-section" aria-labelledby="mostSearchedTitle">
+        <h2 class="catalog-section-title" id="mostSearchedTitle"><span></span>Más buscados<span></span></h2>
+        <div id="mostSearchedCatalog" class="catalog-product-grid"></div>
+    </section>
+    <section class="catalog-product-section" aria-labelledby="immediateTitle">
+        <h2 class="catalog-section-title" id="immediateTitle"><span></span>Disponibles Entrega Inmediata<span></span></h2>
+        <div id="immediateCatalog" class="catalog-product-grid"></div>
+    </section>
+</div>
+<h2 class="catalog-section-title catalog-results-title" id="catalogResultsTitle"><span></span>Resultados<span></span></h2>
+<div id="catalogo" class="catalog-product-grid"></div>
 <div id="loader">Cargando perfumes...</div>
 
 <div id="bot-modal">
@@ -74,8 +110,18 @@
 </div>
 
 <div id="visorImagen">
-    <img id="imagenGrande">
-    <button id="cerrarVisor">✕</button>
+    <article class="product-viewer-card" role="dialog" aria-modal="true" aria-labelledby="visorTitulo">
+        <div class="product-viewer-image-wrap">
+            <img id="imagenGrande" alt="">
+        </div>
+        <div class="product-viewer-info">
+            <span id="visorMarca"></span>
+            <h2 id="visorTitulo"></h2>
+            <p>Una fragancia seleccionada por Elite Parfums. Consulta disponibilidad y atención personalizada.</p>
+            <button id="visorCotizar" class="btn btn-cotizar-perfume">Cotizar</button>
+        </div>
+        <button id="cerrarVisor" type="button" aria-label="Cerrar">✕</button>
+    </article>
 </div>
 
 <button id="btnArriba" title="Ir arriba">↑</button>

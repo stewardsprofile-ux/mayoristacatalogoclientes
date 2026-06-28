@@ -1504,3 +1504,625 @@ header {
 @media (max-width: 600px) {
     header { padding: 22px 10px 18px; }
 }
+
+/* ==========================================================================
+   CATÁLOGO — PORTADA EDITORIAL
+   ========================================================================== */
+.catalog-page {
+    min-height: 100vh;
+    background: #050607;
+}
+
+.catalog-page .catalog-hero {
+    position: relative;
+    isolation: isolate;
+    padding: 14px clamp(24px, 6vw, 96px) 16px;
+    overflow: hidden;
+    background: #050607 url("assets/home-bg-perfumes-left.png") center 31% / cover no-repeat;
+}
+
+.catalog-page .catalog-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(90deg, rgba(5,6,7,.34), rgba(5,6,7,.62) 48%, rgba(5,6,7,.52));
+}
+
+.catalog-page .catalog-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 50% 22%, rgba(5,6,7,.16), rgba(5,6,7,.58) 70%),
+        linear-gradient(180deg, rgba(5,6,7,.08), rgba(5,6,7,.9) 100%);
+}
+
+.catalog-quick-links {
+    position: absolute;
+    top: 16px;
+    right: clamp(22px, 6vw, 96px);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.catalog-quick-links a {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(216,179,92,.44);
+    border-radius: 50%;
+    background: rgba(5,6,7,.46);
+    color: var(--elite-gold);
+    text-decoration: none;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+}
+
+.catalog-quick-links img {
+    width: 17px;
+    height: 17px;
+    object-fit: contain;
+}
+
+.catalog-brand {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    color: inherit;
+    text-decoration: none;
+}
+
+.catalog-page .catalog-brand .logo {
+    width: 82px;
+    margin: -8px auto 0;
+    filter: drop-shadow(0 7px 18px rgba(0,0,0,.6));
+}
+
+.catalog-page .catalog-brand .titulo {
+    margin: -3px 0 0;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(24px, 2.6vw, 38px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: .24em;
+    color: var(--elite-gold);
+}
+
+.catalog-brand > span {
+    margin-top: 7px;
+    color: rgba(255,255,255,.84);
+    font: 600 9px/1.2 'Segoe UI', Arial, sans-serif;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+}
+
+.catalog-metrics {
+    display: flex;
+    justify-content: center;
+    gap: clamp(14px, 2.6vw, 36px);
+    margin: 9px auto 13px;
+    color: rgba(255,255,255,.78);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.catalog-metrics span::first-letter { color: var(--elite-gold); }
+.catalog-metrics strong { color: rgba(255,255,255,.94); }
+
+.catalog-page .search-container {
+    width: min(760px, 100%);
+    margin: 0 auto 12px;
+    padding: 0;
+}
+
+.catalog-page .search-box-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 154px;
+    gap: 8px;
+    width: 100%;
+    padding: 5px;
+    border: 1px solid rgba(216,179,92,.52);
+    border-radius: 14px;
+    background: rgba(5,6,7,.56);
+    box-shadow: 0 12px 30px rgba(0,0,0,.22);
+    backdrop-filter: blur(12px);
+}
+
+.catalog-page #search {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 0 16px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    caret-color: #fff;
+    color-scheme: dark;
+    font-size: 12px;
+}
+
+.catalog-page #search::placeholder { color: rgba(255,255,255,.56); }
+.catalog-page #search:focus,
+.catalog-page #search:active {
+    background: transparent;
+    color: #fff;
+    box-shadow: none;
+}
+.catalog-page #search:-webkit-autofill,
+.catalog-page #search:-webkit-autofill:hover,
+.catalog-page #search:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff;
+    caret-color: #fff;
+    box-shadow: 0 0 0 1000px #08090c inset;
+    transition: background-color 9999s ease-out 0s;
+}
+.catalog-page #search::-webkit-search-cancel-button {
+    filter: grayscale(1) brightness(2.4);
+    opacity: .75;
+}
+
+.catalog-search-submit {
+    min-height: 38px;
+    border: 1px solid rgba(216,179,92,.64);
+    border-radius: 9px;
+    background: rgba(5,6,7,.58);
+    color: var(--elite-gold);
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.catalog-page .catalog-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(94px, 1fr));
+    gap: 10px;
+    width: min(1040px, 100%);
+    margin: 0 auto 10px;
+}
+
+.catalog-page .catalog-filter-grid button {
+    position: relative;
+    min-height: 40px;
+    margin: 0;
+    padding: 8px 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid rgba(216,179,92,.28);
+    border-radius: 10px;
+    background: rgba(5,6,7,.58);
+    color: rgba(255,255,255,.9);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.catalog-page .catalog-filter-grid button.active {
+    background: rgba(216,179,92,.10) !important;
+    color: #fff !important;
+    border-color: rgba(216,179,92,.76) !important;
+}
+
+.filter-icon { color: var(--elite-gold); font-size: 15px; }
+.catalog-news small {
+    position: absolute;
+    right: 3px;
+    top: -7px;
+    padding: 2px 5px;
+    border-radius: 6px;
+    background: var(--elite-gold);
+    color: #070707;
+    font-size: 6px;
+    line-height: 1;
+}
+
+.catalog-subtitle,
+.catalog-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 7px auto;
+    color: var(--elite-gold);
+    font: 500 14px/1 'Cinzel', Georgia, serif;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.catalog-subtitle span,
+.catalog-section-title span {
+    width: 84px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(216,179,92,.62));
+}
+.catalog-subtitle span:last-child,
+.catalog-section-title span:last-child { transform: scaleX(-1); }
+
+.catalog-page .contenedor-marcas-scroll {
+    width: min(1120px, 100%);
+    margin: 0 auto 12px;
+    padding: 0 38px;
+}
+
+.catalog-page .grid-marcas {
+    gap: 9px;
+    padding: 2px 0;
+}
+
+.catalog-page .btn-marca {
+    flex: 0 0 auto;
+    min-width: 106px;
+    min-height: 34px;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 7px;
+    background: rgba(5,6,7,.5);
+    color: rgba(255,255,255,.75);
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 9px;
+}
+
+.catalog-page .btn-marca.active {
+    border-color: rgba(216,179,92,.64) !important;
+    color: var(--elite-gold) !important;
+}
+
+.catalog-page .flecha-scroll {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(216,179,92,.48);
+    border-radius: 50%;
+    background: rgba(5,6,7,.62);
+    color: var(--elite-gold);
+    font-size: 23px;
+}
+
+.catalog-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    width: min(1040px, 100%);
+    margin: 0 auto;
+}
+
+.catalog-feature {
+    min-height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid rgba(216,179,92,.5);
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    background-color: rgba(5,6,7,.62);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 16px 34px rgba(0,0,0,.2);
+}
+
+.catalog-feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(5,6,7,.16), rgba(5,6,7,.78));
+}
+
+.catalog-feature-gold {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    text-align: center;
+    background-image: url("assets/catalog-gold-feature.png");
+}
+
+.catalog-feature-gold::before {
+    background: linear-gradient(90deg, rgba(5,6,7,.58), rgba(5,6,7,.86));
+}
+
+.catalog-feature-clients {
+    flex-direction: column;
+    text-align: center;
+    background-image: url("assets/home-bg-satisfied-customers-2.png");
+}
+
+.catalog-feature > * { position: relative; z-index: 1; }
+.catalog-feature-copy { display: flex; flex-direction: column; align-items: center; }
+.catalog-gold-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.catalog-gold-details {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.catalog-gold-details em { margin-top: 0; }
+.catalog-feature small { color: var(--elite-gold); font: 500 12px 'Cinzel', serif; text-transform: uppercase; }
+.catalog-feature strong { color: var(--elite-gold); font: 600 20px/1.02 'Cinzel', serif; text-transform: uppercase; }
+.catalog-feature em { margin: 5px 0 7px; color: rgba(255,255,255,.84); font-size: 9px; font-style: normal; line-height: 1.3; }
+.catalog-feature b { padding: 6px 13px; border-radius: 5px; background: linear-gradient(100deg, #f0d574, #bd762f); color: #130f09; font-size: 8px; text-transform: uppercase; }
+.catalog-stars { color: #e5b743; font-size: 18px; letter-spacing: 3px; }
+.catalog-feature-clients strong {
+    font-size: 16px;
+    line-height: 1.04;
+}
+.catalog-feature-clients em {
+    margin: 4px 0 7px;
+    font-size: 8px;
+}
+
+.catalog-page .catalog-section-title {
+    width: min(560px, 86%);
+    margin: 12px auto 8px;
+    font-size: 17px;
+}
+
+.catalog-page .catalog-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    max-width: 1280px;
+    padding: 0 28px 44px;
+    margin: 0 auto;
+}
+
+.catalog-product-section + .catalog-product-section { margin-top: 4px; }
+.catalog-results-title { display: none; }
+.catalog-empty-feature {
+    grid-column: 1 / -1;
+    margin: 8px 0 24px;
+    padding: 28px;
+    border: 1px dashed rgba(216,179,92,.24);
+    border-radius: 10px;
+    color: rgba(255,255,255,.52);
+    text-align: center;
+    font-size: 12px;
+}
+
+.catalog-page .card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48% 52%;
+    grid-template-rows: 190px 40px;
+    min-width: 0;
+    min-height: 230px;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 9px;
+    background: linear-gradient(145deg, rgba(18,20,22,.94), rgba(5,6,7,.94));
+    overflow: visible;
+    box-shadow: 0 13px 28px rgba(0,0,0,.2);
+}
+
+.catalog-page .card > img {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: 190px;
+    padding: 14px 6px 10px 12px;
+    object-fit: contain;
+    background: transparent;
+    transition: opacity .28s ease, transform .28s ease, filter .28s ease;
+}
+
+.catalog-page .card > img:hover {
+    opacity: .5;
+    transform: scale(.975);
+    filter: brightness(.82);
+}
+
+.catalog-page .card-info-perfume {
+    display: contents;
+}
+
+.card-product-copy {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 28px 14px 12px 5px;
+    text-align: left;
+}
+
+.catalog-page .card h3 {
+    min-height: 0;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.25;
+    text-align: left;
+}
+
+.card-product-copy span {
+    margin-top: 4px;
+    color: rgba(255,255,255,.52);
+    font-size: 9px;
+}
+
+.catalog-page .card .btn-cotizar-perfume {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: auto;
+    margin: 0 8px 7px;
+    padding: 5px;
+    border: 1px solid rgba(216,179,92,.58);
+    border-radius: 5px;
+    background: rgba(5,6,7,.48);
+    color: var(--elite-gold);
+    font-size: 8px;
+    line-height: 1;
+}
+
+.card-favorite {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    z-index: 2;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--elite-gold);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#visorImagen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 3vw, 40px);
+    background: rgba(2,3,4,.9);
+    backdrop-filter: blur(18px) saturate(110%);
+}
+
+.product-viewer-card {
+    position: relative;
+    width: min(1180px, 96vw);
+    height: min(760px, 92vh);
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+    overflow: hidden;
+    border: 1px solid rgba(216,179,92,.48);
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(18,20,22,.98), rgba(5,6,7,.98));
+    box-shadow: 0 35px 90px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+.product-viewer-image-wrap {
+    min-width: 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(18px, 4vw, 60px);
+    background: rgba(255,255,255,.96);
+}
+
+#imagenGrande {
+    width: 100%;
+    height: 100%;
+    max-height: 650px;
+    object-fit: contain;
+}
+
+.product-viewer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(28px, 5vw, 68px);
+    text-align: left;
+}
+
+.product-viewer-info > span {
+    color: var(--elite-gold);
+    font: 500 12px/1.3 'Cinzel', serif;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.product-viewer-info h2 {
+    margin: 14px 0 18px;
+    color: #fff;
+    font: 500 clamp(24px, 3vw, 42px)/1.08 'Cinzel', serif;
+}
+
+.product-viewer-info p {
+    margin: 0 0 30px;
+    color: rgba(255,255,255,.62);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.product-viewer-info .btn-cotizar-perfume {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid rgba(216,179,92,.58);
+    border-radius: 9px;
+    background: rgba(5,6,7,.54);
+    color: var(--elite-gold);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+#cerrarVisor {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(216,179,92,.42);
+    border-radius: 50%;
+    background: rgba(5,6,7,.72);
+    color: #fff;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+@media (max-width: 1050px) {
+    .catalog-page .catalog-filter-grid { grid-template-columns: repeat(4, 1fr); }
+    .catalog-page .catalog-product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+    .catalog-page .catalog-hero { padding: 62px 14px 16px; background-position: 25% center; }
+    .catalog-quick-links { top: 14px; right: 14px; }
+    .catalog-page .catalog-brand .logo { width: 92px; }
+    .catalog-page .catalog-brand .titulo { font-size: 25px; letter-spacing: .16em; }
+    .catalog-metrics { flex-wrap: wrap; gap: 7px 16px; margin-bottom: 14px; }
+    .catalog-page .search-box-wrapper { grid-template-columns: 1fr 96px; }
+    .catalog-page .catalog-filter-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+    .catalog-page .catalog-filter-grid button:last-child { grid-column: 1 / -1; }
+    .catalog-page .contenedor-marcas-scroll { padding: 0 33px; }
+    .catalog-feature-grid { grid-template-columns: 1fr; gap: 10px; }
+    .catalog-feature { min-height: 116px; }
+    .catalog-page .catalog-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 10px 34px; }
+    .catalog-page .card { grid-template-columns: 1fr; grid-template-rows: 128px auto 35px; }
+    .catalog-page .card > img { grid-column: 1; grid-row: 1; height: 128px; padding: 8px; }
+    .card-product-copy { grid-column: 1; grid-row: 2; min-height: 58px; padding: 7px 10px; }
+    .catalog-page .card .btn-cotizar-perfume { grid-row: 3; }
+    .catalog-page .catalog-section-title { margin-top: 14px; font-size: 15px; }
+    #visorImagen { padding: 8px; }
+    .product-viewer-card {
+        width: 100%;
+        height: 96vh;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 62%) minmax(0, 38%);
+        border-radius: 16px;
+    }
+    .product-viewer-image-wrap { padding: 20px; }
+    .product-viewer-info { padding: 20px; justify-content: center; }
+    .product-viewer-info h2 { margin: 8px 0 9px; font-size: 20px; }
+    .product-viewer-info p { margin-bottom: 13px; font-size: 11px; line-height: 1.4; }
+    .product-viewer-info .btn-cotizar-perfume { padding: 11px; }
+    #cerrarVisor { top: 10px; right: 10px; }
+}

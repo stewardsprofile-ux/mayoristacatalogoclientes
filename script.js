@@ -1,6 +1,7 @@
 const telefono = "50662104761";
 let perfumes = [];
 let visibles = 24;
+let visiblesInmediatos = 24;
 let cargando = false; 
 
 let tipoActual = "Todos"; 
@@ -13,6 +14,11 @@ const contenedorMarcas = document.getElementById("contenedorMarcas");
 const loader = document.getElementById("loader");
 const btnArriba = document.getElementById("btnArriba");
 const seccionReciente = document.getElementById("seccion-reciente");
+const featuredSections = document.getElementById("catalogFeaturedSections");
+const mostSearchedCatalog = document.getElementById("mostSearchedCatalog");
+const immediateCatalog = document.getElementById("immediateCatalog");
+const catalogResultsTitle = document.getElementById("catalogResultsTitle");
+const recentQuotesStorageKey = "elite_recent_quoted_perfumes";
 
 /* CARGAR CATÁLOGO (Híbrido: Scraping Estático + Admin Panel) */
 async function cargarDatos() {
@@ -74,7 +80,8 @@ cargarDatos();
 function renderMarcas() {
     if(!contenedorMarcas) return;
     contenedorMarcas.innerHTML = "";
-    let marcas = [...new Set(perfumes.map(p => p.marca).filter(m => m && m !== "Otros"))].sort();
+    let marcas = [...new Set(perfumes.map(p => p.marca).filter(m => m && m !== "Otros"))]
+        .sort((a, b) => a.localeCompare(b, "es", { sensitivity: "base" }));
     
     const btnReset = document.createElement("button");
     btnReset.className = `btn-marca ${marcaActual === "" ? 'active' : ''}`;
@@ -137,12 +144,111 @@ function getFiltrados() {
 }
 
 /* RENDERIZAR */
+function crearTarjetaProducto(p) {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const img = document.createElement("img");
+        img.src = p.Image;
+        img.alt = p.Title || "Perfume Elite";
+        img.loading = "lazy";
+        img.onclick = () => verProducto(p);
+        img.onerror = () => { img.src = "assets/placeholder.webp"; };
+
+        const info = document.createElement("div");
+        info.className = "card-info-perfume";
+
+        const favorite = document.createElement("button");
+        favorite.type = "button";
+        favorite.className = "card-favorite";
+        favorite.setAttribute("aria-label", `Guardar ${p.Title || "perfume"} en favoritos`);
+        favorite.textContent = "♡";
+        favorite.onclick = () => {
+            favorite.classList.toggle("selected");
+            favorite.textContent = favorite.classList.contains("selected") ? "♥" : "♡";
+        };
+
+        const copy = document.createElement("div");
+        copy.className = "card-product-copy";
+        const title = document.createElement("h3");
+        title.textContent = (p.Title || "ELITE PARFUMS").toUpperCase();
+        const brand = document.createElement("span");
+        brand.textContent = p.marca || "Elite Parfums";
+        copy.appendChild(title);
+        copy.appendChild(brand);
+
+        const button = document.createElement("button");
+        button.className = "btn btn-cotizar-perfume";
+        button.textContent = "Cotizar";
+        button.onclick = () => cotizar(p.Title, p.Image);
+
+        info.appendChild(copy);
+        info.appendChild(button);
+        card.appendChild(favorite);
+        card.appendChild(img);
+        card.appendChild(info);
+        return card;
+}
+
+function pintarProductos(contenedor, productos) {
+    contenedor.innerHTML = "";
+    productos.forEach(producto => contenedor.appendChild(crearTarjetaProducto(producto)));
+}
+
+function obtenerCotizadosLocales() {
+    try {
+        const guardados = JSON.parse(localStorage.getItem(recentQuotesStorageKey) || "[]");
+        return guardados
+            .map(item => perfumes.find(p => p.Title === item.Title && p.Image === item.Image) || item)
+            .slice(0, 8);
+    } catch {
+        return [];
+    }
+}
+
+async function obtenerMasBuscados() {
+    try {
+        const response = await fetch("/api/catalog-events", { cache: "no-store" });
+        if (!response.ok) throw new Error("Ranking global no disponible");
+        const data = await response.json();
+        if (Array.isArray(data.ranking) && data.ranking.length) {
+            return data.ranking.map(item =>
+                perfumes.find(p => p.Title === item.Title && p.Image === item.Image) || item
+            ).slice(0, 8);
+        }
+    } catch {
+        // Usa el historial del dispositivo mientras el almacenamiento global no esté conectado.
+    }
+    return obtenerCotizadosLocales();
+}
+
+async function renderVitrinas() {
+    const recientes = await obtenerMasBuscados();
+    if (recientes.length) {
+        pintarProductos(mostSearchedCatalog, recientes);
+    } else {
+        mostSearchedCatalog.innerHTML = '<p class="catalog-empty-feature">Los perfumes cotizados recientemente aparecerán aquí.</p>';
+    }
+    pintarProductos(immediateCatalog, perfumes.slice(0, visiblesInmediatos));
+}
+
+function esVistaDestacada() {
+    return !search.value.trim() && tipoActual === "Todos" && categoriaActual === "Todos" && marcaActual === "";
+}
+
 function render() {
-    const filtrados = getFiltrados();
-    const lista = filtrados.slice(0, visibles);
+    const vistaDestacada = esVistaDestacada();
+    featuredSections.style.display = vistaDestacada ? "block" : "none";
+    catalogResultsTitle.style.display = vistaDestacada ? "none" : "flex";
+    catalogo.style.display = vistaDestacada ? "none" : "grid";
 
-    if (visibles === 24) catalogo.innerHTML = ""; 
+    if (vistaDestacada) {
+        catalogo.innerHTML = "";
+        renderVitrinas();
+        return;
+    }
 
+    const lista = getFiltrados().slice(0, visibles);
     if(lista.length === 0) {
         catalogo.innerHTML = `
             <div style="text-align:center; width:100%; color:#a0aab4; padding:50px; grid-column: 1 / -1;">
@@ -152,36 +258,7 @@ function render() {
         return;
     }
 
-    catalogo.innerHTML = ""; 
-    lista.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const header = document.createElement("div");
-        header.className = "card-header-perfume";
-        header.textContent = (p.Title || "ELITE PARFUMS").toUpperCase();
-
-        const img = document.createElement("img");
-        img.src = p.Image;
-        img.alt = p.Title || "Perfume Elite";
-        img.loading = "lazy";
-        img.onclick = () => verImagen(p.Image);
-        img.onerror = () => { img.src = "assets/placeholder.webp"; };
-
-        const info = document.createElement("div");
-        info.className = "card-info-perfume";
-
-        const button = document.createElement("button");
-        button.className = "btn btn-cotizar-perfume";
-        button.textContent = "Cotizar";
-        button.onclick = () => cotizar(p.Title, p.Image);
-
-        info.appendChild(button);
-        card.appendChild(header);
-        card.appendChild(img);
-        card.appendChild(info);
-        catalogo.appendChild(card);
-    });
+    pintarProductos(catalogo, lista);
 }
 
 /* MANEJAR VISIBILIDAD DE CARRUSEL RECIENTE */
@@ -194,6 +271,15 @@ function manejarCarrusel(mostrar) {
 /* SCROLL INFINITO */
 window.addEventListener("scroll", () => {
     if(btnArriba) btnArriba.style.display = (window.scrollY > 300) ? "block" : "none";
+    if(esVistaDestacada()) {
+        if (!cargando && window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && visiblesInmediatos < perfumes.length) {
+            cargando = true;
+            visiblesInmediatos += 20;
+            pintarProductos(immediateCatalog, perfumes.slice(0, visiblesInmediatos));
+            setTimeout(() => { cargando = false; }, 300);
+        }
+        return;
+    }
     if(cargando) return;
     if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000){
         const totalFiltrados = getFiltrados().length;
@@ -255,14 +341,31 @@ function resetFiltros() {
 }
 
 /* UTILIDADES */
-function verImagen(img){ 
-    const url = window.location.origin + "/" + img; 
-    document.getElementById("imagenGrande").src = url; 
-    document.getElementById("visorImagen").style.display = "flex"; 
+function verProducto(producto){
+    const visor = document.getElementById("visorImagen");
+    const imagen = document.getElementById("imagenGrande");
+    imagen.src = producto.Image;
+    imagen.alt = producto.Title || "Perfume Elite";
+    document.getElementById("visorTitulo").textContent = producto.Title || "Elite Parfums";
+    document.getElementById("visorMarca").textContent = producto.marca || "Elite Parfums";
+    document.getElementById("visorCotizar").onclick = () => cotizar(producto.Title, producto.Image);
+    visor.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+function cerrarVisorProducto() {
+    document.getElementById("visorImagen").style.display = "none";
+    document.body.style.overflow = "";
 }
 
 if(document.getElementById("cerrarVisor")) {
-    document.getElementById("cerrarVisor").onclick = () => document.getElementById("visorImagen").style.display = "none";
+    document.getElementById("cerrarVisor").onclick = cerrarVisorProducto;
+    document.getElementById("visorImagen").addEventListener("click", event => {
+        if (event.target.id === "visorImagen") cerrarVisorProducto();
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") cerrarVisorProducto();
+    });
 }
 
 search.addEventListener("input", () => { 
@@ -271,7 +374,30 @@ search.addEventListener("input", () => {
     render(); 
 });
 
+document.querySelector(".catalog-search-submit")?.addEventListener("click", () => {
+    visibles = 24;
+    render();
+    catalogo.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 function cotizar(n, i){ 
+    const producto = perfumes.find(p => p.Title === n && p.Image === i) || { Title: n, Image: i, marca: "Elite Parfums" };
+    try {
+        const anteriores = JSON.parse(localStorage.getItem(recentQuotesStorageKey) || "[]");
+        const actualizados = [producto, ...anteriores.filter(p => !(p.Title === n && p.Image === i))].slice(0, 8);
+        localStorage.setItem(recentQuotesStorageKey, JSON.stringify(actualizados));
+        if (esVistaDestacada()) renderVitrinas();
+    } catch {
+        // La cotización continúa aunque el navegador bloquee el almacenamiento local.
+    }
+    fetch("/api/catalog-events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(producto),
+        keepalive: true
+    }).then(response => {
+        if (response.ok && esVistaDestacada()) renderVitrinas();
+    }).catch(() => {});
     const urlCompleta = window.location.origin + "/" + i;
     window.open(`https://wa.me/${telefono}?text=${encodeURIComponent('Hola, quiero cotizar este producto:\n\n'+n+'\n\n'+urlCompleta)}`, "_blank"); 
 }
