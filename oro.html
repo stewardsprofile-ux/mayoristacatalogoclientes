@@ -13,10 +13,11 @@
         .gold-catalog-page .catalog-hero{background-image:url("assets/catalog-gold-feature.png");background-position:center 42%}
         .gold-catalog-page .catalog-brand .titulo{color:var(--elite-gold)}
         .gold-catalog-page .catalog-metrics{justify-content:center}
-        .gold-filter-stack{display:grid;gap:0;width:min(1040px,100%);margin:0 auto 18px;border-top:1px solid rgba(255,255,255,.1)}
-        .gold-filter-group{min-height:43px;display:flex;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-        .gold-filter-label{flex:0 0 110px;color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;text-align:left;text-transform:uppercase}
-        .gold-filter-row{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:5px}
+        [hidden]{display:none!important}
+        .gold-filter-stack{width:min(1040px,100%);margin:0 auto 18px;border-block:1px solid rgba(255,255,255,.1)}
+        .gold-filter-step{min-height:52px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;padding:8px 0}
+        .gold-filter-label{color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+        .gold-filter-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
         .gold-filter-row button{min-height:28px;padding:4px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(5,6,7,.64);color:rgba(255,255,255,.76);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;backdrop-filter:blur(10px)}
         .gold-filter-row button.active{border-color:rgba(216,179,92,.76);background:rgba(216,179,92,.10);color:#fff}
         .catalog-feature-perfumes{flex-direction:column;text-align:center;background-image:url("assets/home-bg-perfumes-left.png")}
@@ -32,8 +33,7 @@
         #btnArribaOro{display:none;position:fixed;right:20px;bottom:20px;z-index:900;width:46px;height:46px;padding:0;border:1px solid rgba(216,179,92,.5);border-radius:50%;background:rgba(5,6,7,.82);color:var(--elite-gold);font-size:20px}
         @media(max-width:1100px){.gold-catalog-page #catalogo-oro{grid-template-columns:repeat(3,minmax(0,1fr))}}
         @media(max-width:720px){
-            .gold-filter-group{align-items:flex-start;flex-direction:column;gap:5px;padding:7px 0}
-            .gold-filter-label{flex-basis:auto}
+            .gold-filter-step{flex-direction:column;gap:5px;padding:8px 0}
             .gold-filter-row{gap:4px}
             .gold-filter-row button{min-height:26px;padding:3px 8px;font-size:7px}
             .gold-catalog-page #catalogo-oro{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 10px 34px}
@@ -62,13 +62,7 @@
     </div>
 
     <div class="gold-filter-stack" aria-label="Clasificaciones de piezas de oro">
-        <div class="gold-filter-group">
-            <span class="gold-filter-label">Todos</span>
-            <div class="gold-filter-row">
-                <button class="all-oro active" onclick="resetFiltrosOro()">▦&nbsp; Todos</button>
-            </div>
-        </div>
-        <div class="gold-filter-group">
+        <div class="gold-filter-step" id="goldGenderStep">
             <span class="gold-filter-label">Género</span>
             <div class="gold-filter-row">
                 <button class="gen-oro" data-val="Hombre" onclick="filtrarGenero('Hombre')">♟&nbsp; Hombre</button>
@@ -76,19 +70,15 @@
                 <button class="gen-oro" data-val="Niños" onclick="filtrarGenero('Niños')">♙&nbsp; Niños</button>
             </div>
         </div>
-        <div class="gold-filter-group">
+        <div class="gold-filter-step" id="goldPieceStep" hidden>
             <span class="gold-filter-label">Tipo de pieza</span>
             <div class="gold-filter-row">
+                <button class="gold-back" onclick="volverAGeneros()">← Volver</button>
                 <button class="cat-oro" data-val="Cadenas" onclick="filtrarCat('Cadenas')">Cadenas</button>
                 <button class="cat-oro" data-val="Pulseras" onclick="filtrarCat('Pulseras')">Pulseras</button>
                 <button class="cat-oro" data-val="Anillos" onclick="filtrarCat('Anillos')">Anillos</button>
                 <button class="cat-oro" data-val="Argollas" onclick="filtrarCat('Argollas')">Argollas</button>
                 <button class="cat-oro" data-val="Aretes" onclick="filtrarCat('Aretes')">Aretes</button>
-            </div>
-        </div>
-        <div class="gold-filter-group">
-            <span class="gold-filter-label">Especiales</span>
-            <div class="gold-filter-row">
                 <button class="cat-oro-especial" data-val="Graduacion" onclick="filtrarCatEspecial('Graduacion')">Graduación</button>
                 <button class="cat-oro-especial" data-val="Matrimonio" onclick="filtrarCatEspecial('Matrimonio')">Matrimonio</button>
                 <button class="cat-oro-especial" data-val="15 Años" onclick="filtrarCatEspecial('15 Años')">15 Años</button>

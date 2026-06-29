@@ -44,6 +44,8 @@ const goldFeaturedSections = document.getElementById("goldFeaturedSections");
 const mostQuotedGold = document.getElementById("mostQuotedGold");
 const immediateGold = document.getElementById("immediateGold");
 const goldResultsTitle = document.getElementById("goldResultsTitle");
+const goldGenderStep = document.getElementById("goldGenderStep");
+const goldPieceStep = document.getElementById("goldPieceStep");
 const recentGoldQuotesKey = "elite_recent_quoted_gold";
 
 async function cargarJsonDesdeGithub(folderPath) {
@@ -323,15 +325,14 @@ function filtrarGenero(valor) {
         actualizarBotones("cat-oro-especial", "");
     }
     visiblesOro = 12;
-    actualizarTodoOro(vistaOroDestacada());
     actualizarBotones("gen-oro", valor);
+    mostrarPasoPiezas();
     renderOro();
 }
 
 function filtrarCat(valor) {
     filtroCat = filtroCat === valor ? "Todos" : valor;
     visiblesOro = 12;
-    actualizarTodoOro(vistaOroDestacada());
     actualizarBotones("cat-oro", filtroCat);
     actualizarBotones("cat-oro-especial", "");
     renderOro();
@@ -339,12 +340,7 @@ function filtrarCat(valor) {
 
 function filtrarCatEspecial(valor) {
     filtroCat = filtroCat === valor ? "Todos" : valor;
-    if (filtroCat !== "Todos") {
-        filtroGenero = "Todos";
-    }
     visiblesOro = 12;
-    actualizarTodoOro(vistaOroDestacada());
-    actualizarBotones("gen-oro", filtroGenero);
     actualizarBotones("cat-oro", "");
     actualizarBotones("cat-oro-especial", filtroCat === "Todos" ? "" : filtroCat);
     renderOro();
@@ -357,21 +353,23 @@ function actualizarBotones(clase, seleccionado) {
     });
 }
 
-function actualizarTodoOro(activo) {
-    document.querySelector(".all-oro")?.classList.toggle("active", activo);
-}
-
-function resetFiltrosOro() {
+function volverAGeneros() {
     filtroTipo = "Todos";
     filtroGenero = "Todos";
     filtroCat = "Todos";
     visiblesOro = 12;
-    actualizarTodoOro(true);
     actualizarBotones("tipo-oro", "Todos");
     actualizarBotones("gen-oro", "");
     actualizarBotones("cat-oro", "");
     actualizarBotones("cat-oro-especial", "");
+    if (goldGenderStep) goldGenderStep.hidden = false;
+    if (goldPieceStep) goldPieceStep.hidden = true;
     renderOro();
+}
+
+function mostrarPasoPiezas() {
+    if (goldGenderStep) goldGenderStep.hidden = true;
+    if (goldPieceStep) goldPieceStep.hidden = false;
 }
 
 function slugWhatsApp(texto) {
