@@ -323,6 +323,7 @@ function filtrarGenero(valor) {
         actualizarBotones("cat-oro-especial", "");
     }
     visiblesOro = 12;
+    actualizarTodoOro(vistaOroDestacada());
     actualizarBotones("gen-oro", valor);
     renderOro();
 }
@@ -330,6 +331,7 @@ function filtrarGenero(valor) {
 function filtrarCat(valor) {
     filtroCat = filtroCat === valor ? "Todos" : valor;
     visiblesOro = 12;
+    actualizarTodoOro(vistaOroDestacada());
     actualizarBotones("cat-oro", filtroCat);
     actualizarBotones("cat-oro-especial", "");
     renderOro();
@@ -341,6 +343,7 @@ function filtrarCatEspecial(valor) {
         filtroGenero = "Todos";
     }
     visiblesOro = 12;
+    actualizarTodoOro(vistaOroDestacada());
     actualizarBotones("gen-oro", filtroGenero);
     actualizarBotones("cat-oro", "");
     actualizarBotones("cat-oro-especial", filtroCat === "Todos" ? "" : filtroCat);
@@ -352,6 +355,23 @@ function actualizarBotones(clase, seleccionado) {
         const valor = boton.getAttribute("data-val");
         boton.classList.toggle("active", valor === seleccionado);
     });
+}
+
+function actualizarTodoOro(activo) {
+    document.querySelector(".all-oro")?.classList.toggle("active", activo);
+}
+
+function resetFiltrosOro() {
+    filtroTipo = "Todos";
+    filtroGenero = "Todos";
+    filtroCat = "Todos";
+    visiblesOro = 12;
+    actualizarTodoOro(true);
+    actualizarBotones("tipo-oro", "Todos");
+    actualizarBotones("gen-oro", "");
+    actualizarBotones("cat-oro", "");
+    actualizarBotones("cat-oro-especial", "");
+    renderOro();
 }
 
 function slugWhatsApp(texto) {
