@@ -5,7 +5,9 @@ module.exports = async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   if (!isAuthenticated(req)) return res.status(401).json({ error: "No autorizado" });
   if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido" });
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return res.status(503).json({ error: "Vercel Blob aún no está conectado" });
+  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) {
+    return res.status(503).json({ error: "Vercel Blob aún no está conectado" });
+  }
 
   try {
     const contentType = String(req.body?.contentType || "");
