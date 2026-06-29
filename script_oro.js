@@ -199,10 +199,6 @@ function crearCardOro(joya) {
     const card = document.createElement("div");
     card.className = "card";
 
-    const etiquetaHeader = categoriasEspecialesOro.includes(joya.categoria)
-        ? joya.categoria
-        : (joya.genero || "Elite");
-
     const img = document.createElement("img");
     img.src = urlFinal;
     img.alt = joya.nombre;
@@ -216,20 +212,10 @@ function crearCardOro(joya) {
     const info = document.createElement("div");
     info.className = "card-info-perfume";
 
-    const copy = document.createElement("div");
-    copy.className = "card-product-copy";
-    const title = document.createElement("h3");
-    title.textContent = joya.nombre;
-    const detail = document.createElement("span");
-    detail.textContent = `${joya.tipo} · ${etiquetaHeader}`;
-    copy.appendChild(title);
-    copy.appendChild(detail);
-
     const boton = document.createElement("button");
     boton.className = "btn btn-cotizar-perfume";
     boton.textContent = "Cotizar";
     boton.addEventListener("click", () => cotizarJoya(joya));
-    info.appendChild(copy);
     info.appendChild(boton);
 
     card.appendChild(img);
