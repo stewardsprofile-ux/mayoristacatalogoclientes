@@ -286,12 +286,16 @@ function renderOro() {
 
     const vistaDestacada = vistaOroDestacada();
     if (goldFeaturedSections) goldFeaturedSections.style.display = vistaDestacada ? "block" : "none";
-    if (goldResultsTitle) goldResultsTitle.style.display = vistaDestacada ? "none" : "flex";
-    catalogoOro.style.display = vistaDestacada ? "none" : "grid";
+    if (goldResultsTitle) {
+        goldResultsTitle.style.display = "flex";
+        if (goldResultsTitle.childNodes[1]) {
+            goldResultsTitle.childNodes[1].nodeValue = vistaDestacada ? "Todas las piezas" : "Resultados";
+        }
+    }
+    catalogoOro.style.display = "grid";
 
     if (vistaDestacada) {
         renderVitrinasOro();
-        return;
     }
 
     const filtrados = joyas.filter((joya) => {
