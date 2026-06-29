@@ -40,6 +40,11 @@ const repoBranch = "main";
 const catalogoOro = document.getElementById("catalogo-oro");
 const loaderOro = document.getElementById("loaderOro");
 const btnArribaOro = document.getElementById("btnArribaOro");
+const goldFeaturedSections = document.getElementById("goldFeaturedSections");
+const mostQuotedGold = document.getElementById("mostQuotedGold");
+const immediateGold = document.getElementById("immediateGold");
+const goldResultsTitle = document.getElementById("goldResultsTitle");
+const recentGoldQuotesKey = "elite_recent_quoted_gold";
 
 async function cargarJsonDesdeGithub(folderPath) {
     const user = "stewardsprofile-ux";
@@ -125,7 +130,7 @@ function normalizarRegistroManual(joya, index) {
         categoria: joya.categoria || "Cadenas",
         imagen: joya.imagen || "",
         descripcion: joya.descripcion || "",
-        reciente: Boolean(joya.reciente)
+        reciente: Boolean(joya.reciente || joya.entregaInmediata)
     };
 }
 
@@ -185,20 +190,18 @@ async function cargarOro() {
     const piezasPorLote = lotes.flatMap(expandirLote).filter((joya) => joya.imagen);
 
     joyas = [...piezasPorLote, ...piezasManuales];
+    if (loaderOro) loaderOro.style.display = "none";
     renderOro();
 }
 
 function crearCardOro(joya) {
     const urlFinal = toAbsoluteImageUrl(joya.imagen);
     const card = document.createElement("div");
-    card.className = "card-oro-full";
+    card.className = "card";
 
-    const header = document.createElement("div");
-    header.className = "header-card-oro";
     const etiquetaHeader = categoriasEspecialesOro.includes(joya.categoria)
         ? joya.categoria
         : (joya.genero || "Elite");
-    header.textContent = `${joya.tipo} | ${etiquetaHeader}`;
 
     const img = document.createElement("img");
     img.src = urlFinal;
@@ -211,23 +214,97 @@ function crearCardOro(joya) {
     };
 
     const info = document.createElement("div");
-    info.className = "info-card-oro";
+    info.className = "card-info-perfume";
+
+    const copy = document.createElement("div");
+    copy.className = "card-product-copy";
+    const title = document.createElement("h3");
+    title.textContent = joya.nombre;
+    const detail = document.createElement("span");
+    detail.textContent = `${joya.tipo} · ${etiquetaHeader}`;
+    copy.appendChild(title);
+    copy.appendChild(detail);
 
     const boton = document.createElement("button");
-    boton.className = "btn-cotizar-oro-full";
-    boton.textContent = "COTIZAR";
+    boton.className = "btn btn-cotizar-perfume";
+    boton.textContent = "Cotizar";
     boton.addEventListener("click", () => cotizarJoya(joya));
+    info.appendChild(copy);
     info.appendChild(boton);
 
-    card.appendChild(header);
     card.appendChild(img);
     card.appendChild(info);
     return card;
 }
 
+function pintarJoyas(contenedor, piezas) {
+    if (!contenedor) return;
+    contenedor.innerHTML = "";
+    piezas.forEach((joya) => contenedor.appendChild(crearCardOro(joya)));
+}
+
+function vistaOroDestacada() {
+    return filtroTipo === "Todos" && filtroGenero === "Todos" && filtroCat === "Todos";
+}
+
+function cotizadasLocales() {
+    try {
+        const guardadas = JSON.parse(localStorage.getItem(recentGoldQuotesKey) || "[]");
+        return guardadas.map((item) =>
+            joyas.find((joya) => joya.nombre === item.nombre && joya.imagen === item.imagen) || item
+        ).slice(0, 8);
+    } catch {
+        return [];
+    }
+}
+
+async function obtenerMasCotizadas() {
+    try {
+        const response = await fetch("/api/catalog-events?catalog=oro", { cache: "no-store" });
+        if (!response.ok) throw new Error("Ranking de oro no disponible");
+        const data = await response.json();
+        if (Array.isArray(data.ranking) && data.ranking.length) {
+            return data.ranking.map((item) =>
+                joyas.find((joya) => joya.nombre === item.Title && toAbsoluteImageUrl(joya.imagen) === item.Image) || {
+                    nombre: item.Title,
+                    imagen: item.Image,
+                    tipo: item.marca || "Oro 10K",
+                    genero: "Elite",
+                    categoria: "Joyería"
+                }
+            ).slice(0, 8);
+        }
+    } catch {
+        // El historial local mantiene la vitrina disponible si el ranking global falla.
+    }
+    return cotizadasLocales();
+}
+
+async function renderVitrinasOro() {
+    const cotizadas = await obtenerMasCotizadas();
+    if (cotizadas.length) {
+        pintarJoyas(mostQuotedGold, cotizadas);
+    } else if (mostQuotedGold) {
+        mostQuotedGold.innerHTML = '<p class="catalog-empty-feature">Las piezas cotizadas aparecerán aquí.</p>';
+    }
+
+    const inmediatas = joyas.filter((joya) => joya.reciente).slice(0, visiblesOro);
+    pintarJoyas(immediateGold, inmediatas.length ? inmediatas : joyas.slice(0, visiblesOro));
+}
+
 function renderOro() {
     if (!catalogoOro) return;
     catalogoOro.innerHTML = "";
+
+    const vistaDestacada = vistaOroDestacada();
+    if (goldFeaturedSections) goldFeaturedSections.style.display = vistaDestacada ? "block" : "none";
+    if (goldResultsTitle) goldResultsTitle.style.display = vistaDestacada ? "none" : "flex";
+    catalogoOro.style.display = vistaDestacada ? "none" : "grid";
+
+    if (vistaDestacada) {
+        renderVitrinasOro();
+        return;
+    }
 
     const filtrados = joyas.filter((joya) => {
         const cumpleTipo = filtroTipo === "Todos" || joya.tipo === filtroTipo;
@@ -242,12 +319,7 @@ function renderOro() {
         return;
     }
 
-    const visibles = filtrados.slice(0, visiblesOro);
-    const fragment = document.createDocumentFragment();
-    visibles.forEach((joya) => {
-        fragment.appendChild(crearCardOro(joya));
-    });
-    catalogoOro.appendChild(fragment);
+    pintarJoyas(catalogoOro, filtrados.slice(0, visiblesOro));
 }
 
 function filtrarTipo(valor) {
@@ -323,6 +395,27 @@ function enlacePiezaJoya(joya) {
 function cotizarJoya(joya) {
     const mensaje = `Me interesa esta pieza de oro este es el Link: ${enlacePiezaJoya(joya)}\n\nme lo puedes cotizar, Por Favor?`;
     window.open(`https://wa.me/${telefonoGold}?text=${encodeURIComponent(mensaje)}`, "_blank");
+
+    try {
+        const guardadas = JSON.parse(localStorage.getItem(recentGoldQuotesKey) || "[]");
+        const actualizada = [joya, ...guardadas.filter((item) =>
+            item.nombre !== joya.nombre || item.imagen !== joya.imagen
+        )].slice(0, 8);
+        localStorage.setItem(recentGoldQuotesKey, JSON.stringify(actualizada));
+    } catch {
+        // La cotización continúa aunque el navegador bloquee el almacenamiento local.
+    }
+
+    fetch("/api/catalog-events?catalog=oro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            Title: joya.nombre,
+            Image: toAbsoluteImageUrl(joya.imagen),
+            marca: joya.tipo || "Oro 10K"
+        }),
+        keepalive: true
+    }).catch(() => {});
 }
 
 function verImagen(url) {
@@ -365,5 +458,11 @@ if (btnArribaOro) {
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
+
+document.getElementById("visorImagen")?.addEventListener("click", (event) => {
+    if (event.target.id === "visorImagen" || event.target.id === "imagenGrande") {
+        event.currentTarget.style.display = "none";
+    }
+});
 
 cargarOro();

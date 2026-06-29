@@ -1,4 +1,7 @@
-const RANKING_KEY = "elite:catalog:quote-ranking:v1";
+const RANKING_KEYS = {
+  catalogo: "elite:catalog:quote-ranking:v1",
+  oro: "elite:gold:quote-ranking:v1"
+};
 const MAX_FIELD_LENGTH = 500;
 const requestLog = new Map();
 
@@ -60,6 +63,9 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const catalog = req.query?.catalog === "oro" ? "oro" : "catalogo";
+    const rankingKey = RANKING_KEYS[catalog];
+
     if (req.method === "POST") {
       if (!withinRateLimit(req)) return res.status(429).json({ error: "Demasiadas solicitudes" });
 
@@ -73,12 +79,12 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: "Producto invalido" });
       }
 
-      await redis(["ZINCRBY", RANKING_KEY, 1, JSON.stringify(product)]);
+      await redis(["ZINCRBY", rankingKey, 1, JSON.stringify(product)]);
       return res.status(200).json({ ok: true });
     }
 
     if (req.method === "GET") {
-      const raw = await redis(["ZREVRANGE", RANKING_KEY, 0, 7, "WITHSCORES"]);
+      const raw = await redis(["ZREVRANGE", rankingKey, 0, 7, "WITHSCORES"]);
       const ranking = [];
 
       for (let index = 0; index < raw.length; index += 2) {
