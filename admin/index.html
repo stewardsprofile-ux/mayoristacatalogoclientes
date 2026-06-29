@@ -1,95 +1,71 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elite Admin | Centro de Mando</title>
-
-  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
-
-  <style>
-    body { background-color: #10171f !important; }
-    .nc-app-layout-content { background: #10171f !important; }
-    .elite-bulk-link {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 9999;
-      background: #ffffff;
-      color: #10171f;
-      text-decoration: none;
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      font-family: Arial, sans-serif;
-    }
-    :is(button, [role="button"], .elite-bulk-link):is(:hover, :active, .active, .selected, [aria-selected="true"], [aria-pressed="true"]) {
-      background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(216,179,92,.035) 48%, rgba(8,9,12,.42)) !important;
-      color: rgba(255,255,255,.94) !important;
-      border-color: rgba(216,179,92,.27) !important;
-      -webkit-backdrop-filter: blur(12px) saturate(115%);
-      backdrop-filter: blur(12px) saturate(115%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.075), 0 7px 18px rgba(0,0,0,.18) !important;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Elite Admin</title>
+  <link rel="icon" href="/assets/logo.png">
+  <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <a class="elite-bulk-link" href="/admin/bulk-upload.html">Carga Masiva</a>
-  <script>
-    (function () {
-      function findButtonByText(scope, text) {
-        return Array.from(scope.querySelectorAll("button")).find(function (button) {
-          return button.textContent && button.textContent.trim() === text;
-        });
-      }
+  <section class="login" id="loginView">
+    <form class="login-card" id="loginForm">
+      <img src="/assets/logo.png" alt="Elite Costa Rica">
+      <p class="eyebrow">Centro de mando</p>
+      <h1>Elite Admin</h1>
+      <p>Gestiona el catálogo desde un solo lugar.</p>
+      <label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label>
+      <button class="primary" type="submit">Ingresar</button>
+      <div class="message" id="loginMessage"></div>
+    </form>
+  </section>
 
-      function enhanceMediaDialogs() {
-        const dialogs = Array.from(document.querySelectorAll('[role="dialog"]'));
+  <main class="app" id="appView" hidden>
+    <aside class="sidebar">
+      <div class="brand"><img src="/assets/logo.png" alt=""><span>Elite Admin<small>Inventario</small></span></div>
+      <nav><button class="active">Catálogo</button><a href="/catalogo" target="_blank">Ver tienda ↗</a></nav>
+      <button class="logout" id="logoutButton">Cerrar sesión</button>
+    </aside>
 
-        dialogs.forEach(function (dialog) {
-          const deleteSelectedButton = findButtonByText(dialog, "Delete selected");
-          const chooseSelectedButton = findButtonByText(dialog, "Choose selected");
-          if (!deleteSelectedButton || !chooseSelectedButton) return;
-          if (dialog.querySelector('[data-elite-select-all="true"]')) return;
+    <section class="workspace">
+      <header class="topbar">
+        <div><p class="eyebrow">Inventario</p><h1>Perfumes</h1><p id="summary">Cargando registros…</p></div>
+        <button class="primary" id="newButton">＋ Nuevo perfume</button>
+      </header>
+      <section class="toolbar">
+        <input id="adminSearch" type="search" placeholder="Buscar por nombre o marca…">
+        <select id="categoryFilter"><option value="">Todas las categorías</option><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Arabes</option><option>Estuches</option></select>
+        <select id="statusFilter"><option value="active">Activos</option><option value="deleted">Desactivados</option><option value="all">Todos</option></select>
+      </section>
+      <div class="inventory" id="inventory"></div>
+      <div class="empty" id="emptyState" hidden>No encontramos registros con esos filtros.</div>
+    </section>
+  </main>
 
-          const selectAllButton = deleteSelectedButton.cloneNode(true);
-          selectAllButton.type = "button";
-          selectAllButton.dataset.eliteSelectAll = "true";
-          selectAllButton.textContent = "Seleccionar todo";
-          selectAllButton.style.background = "#e8f0ff";
-          selectAllButton.style.color = "#163b74";
-
-          selectAllButton.addEventListener("click", function () {
-            const checkboxes = Array.from(dialog.querySelectorAll('input[type="checkbox"]')).filter(function (checkbox) {
-              return !checkbox.disabled && !checkbox.checked;
-            });
-
-            checkboxes.forEach(function (checkbox) {
-              checkbox.click();
-            });
-          });
-
-          deleteSelectedButton.parentElement.insertBefore(selectAllButton, deleteSelectedButton);
-        });
-      }
-
-      const observer = new MutationObserver(function () {
-        enhanceMediaDialogs();
-      });
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", enhanceMediaDialogs, { once: true });
-      } else {
-        enhanceMediaDialogs();
-      }
-
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-      });
-    })();
-  </script>
+  <dialog id="editorDialog">
+    <form id="editorForm">
+      <div class="dialog-head"><div><p class="eyebrow">Editor</p><h2 id="editorTitle">Nuevo perfume</h2></div><button type="button" class="icon-button" id="closeEditor">×</button></div>
+      <input type="hidden" id="productId">
+      <div class="editor-grid">
+        <div class="image-editor">
+          <div class="preview"><img id="imagePreview" src="/assets/placeholder.webp" alt="Vista previa"></div>
+          <label class="upload">Seleccionar imagen<input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/avif"></label>
+          <small>PNG, JPG, WEBP o AVIF. Máximo 4 MB.</small>
+          <label>URL de imagen<input id="productImage" type="url" required></label>
+        </div>
+        <div class="fields">
+          <label class="full">Nombre<input id="productTitle" maxlength="180" required></label>
+          <label>Marca<input id="productBrand" maxlength="100" required></label>
+          <label>Categoría<select id="productCategory"><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Arabes</option><option>Estuches</option></select></label>
+          <label>Clasificación<input id="productType" maxlength="80" placeholder="Ej. Hombre, Árabe, Estuche"></label>
+          <label class="check"><input id="productImmediate" type="checkbox"> Entrega inmediata</label>
+          <label class="full">Descripción<textarea id="productDescription" maxlength="1200" rows="5"></textarea></label>
+        </div>
+      </div>
+      <div class="dialog-actions"><button type="button" class="danger" id="deleteButton">Desactivar</button><span class="message" id="editorMessage"></span><button type="submit" class="primary">Guardar cambios</button></div>
+    </form>
+  </dialog>
+  <script src="/admin/admin.js" defer></script>
 </body>
 </html>

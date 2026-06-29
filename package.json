@@ -4,6 +4,7 @@
   "description": "Catalogo con Asistente IA",
   "main": "index.html",
   "dependencies": {
+    "@vercel/blob": "^2.5.0",
     "openai": "^4.0.0"
   },
   "author": "Warner Steward",

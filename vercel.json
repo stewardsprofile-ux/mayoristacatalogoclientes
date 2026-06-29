@@ -53,16 +53,6 @@
       "permanent": true
     },
     {
-      "source": "/admin",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/admin/:path*",
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/catalogo.html",
       "destination": "/catalogo",
       "permanent": true
