@@ -4,110 +4,48 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Elite Admin</title>
-  <link rel="icon" href="/assets/logo.png">
-  <link rel="stylesheet" href="/admin/admin.css">
-  <style>
-    [hidden]{display:none!important}
-    .distributor-toolbar{grid-template-columns:1fr 190px}
-    .distributor-row{grid-template-columns:minmax(180px,1.2fr) minmax(150px,.8fr) minmax(170px,1fr) 100px 90px}
-    .distributor-code{font-family:Consolas,monospace;color:var(--gold)}
-    .small-dialog{width:min(650px,94vw)}
-    .distributor-fields{margin-top:4px}
-    .link-output{display:grid;grid-template-columns:1fr auto;gap:8px}
-    .link-output button{color:var(--gold);border-color:rgba(216,179,92,.35)}
-    @media(max-width:760px){.sidebar nav{display:flex;gap:4px}.sidebar nav a{display:none}.distributor-row{grid-template-columns:1fr 100px}.distributor-row>*:nth-child(2),.distributor-row>*:nth-child(3),.distributor-row>*:nth-child(4){display:none}}
-  </style>
+  <title>Portal de Mayoristas · Perfumería Original</title>
+  <link rel="stylesheet" href="/admin/partner.css">
 </head>
 <body>
-  <section class="login" id="loginView">
-    <form class="login-card" id="loginForm">
-      <img src="/assets/logo.png" alt="Elite Costa Rica">
-      <p class="eyebrow">Centro de mando</p>
-      <h1>Elite Admin</h1>
-      <p>Gestiona el catálogo desde un solo lugar.</p>
-      <label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label>
-      <button class="primary" type="submit">Ingresar</button>
-      <div class="message" id="loginMessage"></div>
-    </form>
-  </section>
-
-  <main class="app" id="appView" hidden>
-    <aside class="sidebar">
-      <div class="brand"><img src="/assets/logo.png" alt=""><span>Elite Admin<small>Inventario</small></span></div>
-      <nav>
-        <button class="active" id="catalogTab" type="button">Catálogo</button>
-        <button id="distributorsTab" type="button">Mayoristas</button>
-        <a href="/" target="_blank">Ver tienda ↗</a>
-      </nav>
-      <button class="logout" id="logoutButton">Cerrar sesión</button>
-    </aside>
-
-    <section class="workspace" id="catalogWorkspace">
-      <header class="topbar">
-        <div><p class="eyebrow">Inventario</p><h1>Perfumes</h1><p id="summary">Cargando registros…</p></div>
-        <button class="primary" id="newButton">＋ Nuevo perfume</button>
-      </header>
-      <section class="toolbar">
-        <input id="adminSearch" type="search" placeholder="Buscar por nombre o marca…">
-        <select id="categoryFilter"><option value="">Todas las categorías</option><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Arabes</option><option>Estuches</option></select>
-        <select id="statusFilter"><option value="active">Activos</option><option value="deleted">Desactivados</option><option value="all">Todos</option></select>
-      </section>
-      <div class="inventory" id="inventory"></div>
-      <div class="empty" id="emptyState" hidden>No encontramos registros con esos filtros.</div>
+  <main class="portal-shell">
+    <section class="intro">
+      <p class="eyebrow">PERFUMERÍA ORIGINAL</p>
+      <h1>Tu catálogo,<br>tu WhatsApp.</h1>
+      <p>Crea tu acceso, registra tu número y comparte un enlace personal. Cada botón de cotización enviará al cliente directamente a tu WhatsApp.</p>
+      <div class="steps"><span><b>1</b>Crea tu usuario</span><span><b>2</b>Agrega tu WhatsApp</span><span><b>3</b>Comparte tu enlace</span></div>
     </section>
 
-    <section class="workspace" id="distributorsWorkspace" hidden>
-      <header class="topbar">
-        <div><p class="eyebrow">Red comercial</p><h1>Mayoristas</h1><p id="distributorSummary">Cargando mayoristas…</p></div>
-        <button class="primary" id="newDistributorButton" type="button">＋ Nuevo mayorista</button>
-      </header>
-      <section class="toolbar distributor-toolbar">
-        <input id="distributorSearch" type="search" placeholder="Buscar por nombre, código o WhatsApp…">
-        <select id="distributorStatus"><option value="active">Activos</option><option value="inactive">Desactivados</option><option value="all">Todos</option></select>
-      </section>
-      <div class="inventory" id="distributorInventory"></div>
-      <div class="empty" id="distributorEmpty" hidden>No encontramos mayoristas con esos filtros.</div>
+    <section class="auth-card" id="authView">
+      <div class="tabs"><button class="active" id="loginTab" type="button">Ingresar</button><button id="registerTab" type="button">Crear cuenta</button></div>
+      <form id="loginForm">
+        <h2>Bienvenido</h2><p>Accede para ver o actualizar tu enlace.</p>
+        <label>Usuario<input id="loginUsername" autocomplete="username" required></label>
+        <label>Contraseña<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">Ingresar</button>
+      </form>
+      <form id="registerForm" hidden>
+        <h2>Crea tu cuenta</h2><p>Tu enlace personal quedará listo inmediatamente.</p>
+        <label>Nombre o negocio<input id="registerName" maxlength="100" required></label>
+        <label>Usuario<input id="registerUsername" minlength="4" maxlength="48" pattern="[a-zA-Z0-9._-]+" autocomplete="username" required></label>
+        <label>WhatsApp con código de país<input id="registerPhone" type="tel" placeholder="50688887777" required></label>
+        <label>Contraseña<input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required></label>
+        <button class="primary" type="submit">Crear mi enlace</button>
+      </form>
+      <p class="message" id="authMessage"></p>
+    </section>
+
+    <section class="profile-card" id="profileView" hidden>
+      <div class="profile-head"><div><p class="eyebrow">MI ENLACE PERSONAL</p><h2 id="profileName"></h2></div><button class="quiet" id="logoutButton" type="button">Salir</button></div>
+      <form id="profileForm">
+        <label>Mi WhatsApp con código de país<input id="profilePhone" type="tel" required></label>
+        <label>Nueva contraseña <small>Déjala vacía para conservar la actual</small><input id="profilePassword" type="password" minlength="8" autocomplete="new-password"></label>
+        <button class="secondary" type="submit">Guardar cambios</button>
+      </form>
+      <div class="share-box"><span>Enlace para compartir</span><div><input id="profileLink" readonly><button class="primary" id="copyLink" type="button">Copiar</button></div><a id="openCatalog" target="_blank" rel="noopener">Abrir mi catálogo ↗</a></div>
+      <p class="message" id="profileMessage"></p>
     </section>
   </main>
-
-  <dialog id="editorDialog">
-    <form id="editorForm">
-      <div class="dialog-head"><div><p class="eyebrow">Editor</p><h2 id="editorTitle">Nuevo perfume</h2></div><button type="button" class="icon-button" id="closeEditor">×</button></div>
-      <input type="hidden" id="productId">
-      <div class="editor-grid">
-        <div class="image-editor">
-          <div class="preview"><img id="imagePreview" src="/assets/placeholder.webp" alt="Vista previa"></div>
-          <label class="upload">Seleccionar imagen<input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/avif"></label>
-          <small>PNG, JPG, WEBP o AVIF. Máximo 4 MB.</small>
-          <label>URL de imagen<input id="productImage" type="url" required></label>
-        </div>
-        <div class="fields">
-          <label class="full">Nombre<input id="productTitle" maxlength="180" required></label>
-          <label>Marca<input id="productBrand" maxlength="100" required></label>
-          <label>Categoría<select id="productCategory"><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Arabes</option><option>Estuches</option></select></label>
-          <label>Clasificación<input id="productType" maxlength="80" placeholder="Ej. Hombre, Árabe, Estuche"></label>
-          <label class="check"><input id="productImmediate" type="checkbox"> Entrega inmediata</label>
-          <label class="full">Descripción<textarea id="productDescription" maxlength="1200" rows="5"></textarea></label>
-        </div>
-      </div>
-      <div class="dialog-actions"><button type="button" class="danger" id="deleteButton">Desactivar</button><span class="message" id="editorMessage"></span><button type="submit" class="primary">Guardar cambios</button></div>
-    </form>
-  </dialog>
-  <dialog id="distributorDialog" class="small-dialog">
-    <form id="distributorForm">
-      <div class="dialog-head"><div><p class="eyebrow">Enlace personalizado</p><h2 id="distributorEditorTitle">Nuevo mayorista</h2></div><button type="button" class="icon-button" id="closeDistributor">×</button></div>
-      <input type="hidden" id="previousDistributorCode">
-      <div class="fields distributor-fields">
-        <label class="full">Nombre<input id="distributorName" maxlength="100" required placeholder="Ej. Distribuidora Ana"></label>
-        <label>WhatsApp con código de país<input id="distributorPhone" type="tel" maxlength="22" required placeholder="50688887777"></label>
-        <label>Código del enlace<input id="distributorCode" maxlength="48" pattern="[a-zA-Z0-9_-]+" placeholder="Se genera automáticamente"></label>
-        <label class="check full"><input id="distributorActive" type="checkbox" checked> Enlace activo</label>
-        <label class="full">Enlace para compartir<span class="link-output"><input id="distributorLink" readonly placeholder="Guarda para generar el enlace"><button id="copyDistributorLink" type="button">Copiar</button></span></label>
-      </div>
-      <div class="dialog-actions"><span class="message" id="distributorMessage"></span><button type="submit" class="primary">Guardar mayorista</button></div>
-    </form>
-  </dialog>
-  <script src="/admin/admin.js" defer></script>
+  <script src="/admin/partner.js" defer></script>
 </body>
 </html>

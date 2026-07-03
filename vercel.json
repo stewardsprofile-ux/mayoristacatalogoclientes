@@ -27,6 +27,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/admin2/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ],
   "redirects": [
