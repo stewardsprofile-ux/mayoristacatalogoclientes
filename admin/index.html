@@ -30,7 +30,7 @@
         <label>Nombre o negocio<input id="registerName" maxlength="100" required></label>
         <label>Usuario<input id="registerUsername" minlength="4" maxlength="48" pattern="[a-zA-Z0-9._-]+" autocomplete="username" required></label>
         <label>Número de WhatsApp<span class="phone-input"><b>+506</b><input id="registerPhone" type="tel" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" placeholder="88887777" required></span></label>
-        <label>Contraseña<input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required></label>
+        <label>Contraseña<input id="registerPassword" type="password" minlength="4" autocomplete="new-password" required></label>
         <button class="primary" type="submit">Crear mi enlace</button>
       </form>
       <p class="message" id="authMessage"></p>
@@ -40,7 +40,7 @@
       <div class="profile-head"><div><p class="eyebrow">MI ENLACE PERSONAL</p><h2 id="profileName"></h2></div><button class="quiet" id="logoutButton" type="button">Salir</button></div>
       <form id="profileForm">
         <label>Mi número de WhatsApp<span class="phone-input"><b>+506</b><input id="profilePhone" type="tel" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" required></span></label>
-        <label>Nueva contraseña <small>Déjala vacía para conservar la actual</small><input id="profilePassword" type="password" minlength="8" autocomplete="new-password"></label>
+        <label>Nueva contraseña <small>Déjala vacía para conservar la actual</small><input id="profilePassword" type="password" minlength="4" autocomplete="new-password"></label>
         <button class="secondary" type="submit">Guardar cambios</button>
       </form>
       <div class="share-box"><span>Enlace para compartir</span><div><input id="profileLink" readonly><button class="primary" id="copyLink" type="button">Copiar</button></div><a id="openCatalog" target="_blank" rel="noopener">Abrir mi catálogo ↗</a></div>
