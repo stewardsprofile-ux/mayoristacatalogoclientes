@@ -1,4 +1,6 @@
-const telefono = "50662104761";
+let telefono = "50662104761";
+let mayoristaActivo = null;
+const mayoristaStorageKey = "elite_mayorista";
 let perfumes = [];
 let visibles = 24;
 let visiblesInmediatos = 24;
@@ -21,12 +23,60 @@ const catalogResultsTitle = document.getElementById("catalogResultsTitle");
 const catalogMetricProducts = document.getElementById("catalogMetricProducts");
 const recentQuotesStorageKey = "elite_recent_quoted_perfumes";
 
+async function configurarMayorista() {
+    const params = new URLSearchParams(window.location.search);
+    const codigoEnlace = (params.get("vendedor") || "").trim().toLowerCase();
+    let codigo = codigoEnlace;
+
+    if (!codigo) {
+        try { codigo = localStorage.getItem(mayoristaStorageKey) || ""; } catch {}
+    }
+    if (!codigo) return;
+
+    try {
+        const response = await fetch(`/api/distributor?code=${encodeURIComponent(codigo)}`, { cache: "no-store" });
+        if (!response.ok) throw new Error("Mayorista no disponible");
+        const data = await response.json();
+        if (!data.phone || !data.code) throw new Error("Datos de mayorista incompletos");
+        telefono = String(data.phone).replace(/\D/g, "");
+        mayoristaActivo = data;
+        try { localStorage.setItem(mayoristaStorageKey, data.code); } catch {}
+    } catch {
+        if (codigoEnlace) {
+            try { localStorage.removeItem(mayoristaStorageKey); } catch {}
+        }
+    }
+}
+
+configurarMayorista();
+
 /* CARGAR CATÁLOGO UNIFICADO (base + cambios del panel administrativo) */
 async function cargarDatos() {
     try {
-        const res = await fetch("/api/catalog");
-        if (!res.ok) throw new Error("No se pudo consultar el catálogo");
-        perfumes = await res.json();
+        let datos = null;
+
+        try {
+            const resApi = await fetch("/api/catalog");
+            const contentType = resApi.headers.get("content-type") || "";
+
+            if (resApi.ok && contentType.includes("application/json")) {
+                const respuestaApi = await resApi.json();
+                if (Array.isArray(respuestaApi)) datos = respuestaApi;
+            }
+        } catch {
+            datos = null;
+        }
+
+        // Los servidores de vista previa estáticos no ejecutan la API de Vercel.
+        // En ese caso se carga directamente el catálogo base del proyecto.
+        if (!datos) {
+            const resLocal = await fetch("perfumes.json");
+            if (!resLocal.ok) throw new Error("No se encontró perfumes.json");
+            datos = await resLocal.json();
+        }
+
+        if (!Array.isArray(datos)) throw new Error("El catálogo no tiene un formato válido");
+        perfumes = datos;
 
         if (catalogMetricProducts) {
             catalogMetricProducts.textContent = perfumes.length.toLocaleString("en-US");
@@ -364,12 +414,33 @@ function cotizar(n, i){
     }).then(response => {
         if (response.ok && esVistaDestacada()) renderVitrinas();
     }).catch(() => {});
-    const urlCompleta = window.location.origin + "/" + i;
+    if (mayoristaActivo?.code) {
+        fetch("/api/distributor", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: mayoristaActivo.code }),
+            keepalive: true
+        }).catch(() => {});
+    }
+    const urlCompleta = new URL(i, window.location.href).href;
     window.open(`https://wa.me/${telefono}?text=${encodeURIComponent('Hola, quiero cotizar este producto:\n\n'+n+'\n\n'+urlCompleta)}`, "_blank"); 
 }
 
 if(btnArriba) {
-    btnArriba.onclick = () => window.scrollTo({top:0, behavior:"smooth"});
+    btnArriba.addEventListener("click", () => {
+        const root = document.documentElement;
+
+        // En Safari/Chrome movil, scroll-snap puede devolver la vista a la
+        // tarjeta actual antes de que termine un desplazamiento suave.
+        root.classList.add("scrolling-to-top");
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        root.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => root.classList.remove("scrolling-to-top"));
+        });
+    });
 }
 
 // Función para redirigir a la sección de Oro

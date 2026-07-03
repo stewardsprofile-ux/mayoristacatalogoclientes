@@ -463,7 +463,16 @@ window.addEventListener("scroll", () => {
 
 if (btnArribaOro) {
     btnArribaOro.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        const root = document.documentElement;
+
+        root.classList.add("scrolling-to-top");
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        root.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => root.classList.remove("scrolling-to-top"));
+        });
     });
 }
 

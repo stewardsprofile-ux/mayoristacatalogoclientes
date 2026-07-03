@@ -54,7 +54,12 @@
     },
     {
       "source": "/catalogo.html",
-      "destination": "/catalogo",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/catalogo",
+      "destination": "/",
       "permanent": true
     },
     {

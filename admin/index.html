@@ -7,7 +7,17 @@
   <title>Elite Admin</title>
   <link rel="icon" href="/assets/logo.png">
   <link rel="stylesheet" href="/admin/admin.css">
-  <style>[hidden]{display:none!important}</style>
+  <style>
+    [hidden]{display:none!important}
+    .distributor-toolbar{grid-template-columns:1fr 190px}
+    .distributor-row{grid-template-columns:minmax(180px,1.2fr) minmax(150px,.8fr) minmax(170px,1fr) 100px 90px}
+    .distributor-code{font-family:Consolas,monospace;color:var(--gold)}
+    .small-dialog{width:min(650px,94vw)}
+    .distributor-fields{margin-top:4px}
+    .link-output{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .link-output button{color:var(--gold);border-color:rgba(216,179,92,.35)}
+    @media(max-width:760px){.sidebar nav{display:flex;gap:4px}.sidebar nav a{display:none}.distributor-row{grid-template-columns:1fr 100px}.distributor-row>*:nth-child(2),.distributor-row>*:nth-child(3),.distributor-row>*:nth-child(4){display:none}}
+  </style>
 </head>
 <body>
   <section class="login" id="loginView">
@@ -25,11 +35,15 @@
   <main class="app" id="appView" hidden>
     <aside class="sidebar">
       <div class="brand"><img src="/assets/logo.png" alt=""><span>Elite Admin<small>Inventario</small></span></div>
-      <nav><button class="active">Catálogo</button><a href="/catalogo" target="_blank">Ver tienda ↗</a></nav>
+      <nav>
+        <button class="active" id="catalogTab" type="button">Catálogo</button>
+        <button id="distributorsTab" type="button">Mayoristas</button>
+        <a href="/" target="_blank">Ver tienda ↗</a>
+      </nav>
       <button class="logout" id="logoutButton">Cerrar sesión</button>
     </aside>
 
-    <section class="workspace">
+    <section class="workspace" id="catalogWorkspace">
       <header class="topbar">
         <div><p class="eyebrow">Inventario</p><h1>Perfumes</h1><p id="summary">Cargando registros…</p></div>
         <button class="primary" id="newButton">＋ Nuevo perfume</button>
@@ -41,6 +55,19 @@
       </section>
       <div class="inventory" id="inventory"></div>
       <div class="empty" id="emptyState" hidden>No encontramos registros con esos filtros.</div>
+    </section>
+
+    <section class="workspace" id="distributorsWorkspace" hidden>
+      <header class="topbar">
+        <div><p class="eyebrow">Red comercial</p><h1>Mayoristas</h1><p id="distributorSummary">Cargando mayoristas…</p></div>
+        <button class="primary" id="newDistributorButton" type="button">＋ Nuevo mayorista</button>
+      </header>
+      <section class="toolbar distributor-toolbar">
+        <input id="distributorSearch" type="search" placeholder="Buscar por nombre, código o WhatsApp…">
+        <select id="distributorStatus"><option value="active">Activos</option><option value="inactive">Desactivados</option><option value="all">Todos</option></select>
+      </section>
+      <div class="inventory" id="distributorInventory"></div>
+      <div class="empty" id="distributorEmpty" hidden>No encontramos mayoristas con esos filtros.</div>
     </section>
   </main>
 
@@ -65,6 +92,20 @@
         </div>
       </div>
       <div class="dialog-actions"><button type="button" class="danger" id="deleteButton">Desactivar</button><span class="message" id="editorMessage"></span><button type="submit" class="primary">Guardar cambios</button></div>
+    </form>
+  </dialog>
+  <dialog id="distributorDialog" class="small-dialog">
+    <form id="distributorForm">
+      <div class="dialog-head"><div><p class="eyebrow">Enlace personalizado</p><h2 id="distributorEditorTitle">Nuevo mayorista</h2></div><button type="button" class="icon-button" id="closeDistributor">×</button></div>
+      <input type="hidden" id="previousDistributorCode">
+      <div class="fields distributor-fields">
+        <label class="full">Nombre<input id="distributorName" maxlength="100" required placeholder="Ej. Distribuidora Ana"></label>
+        <label>WhatsApp con código de país<input id="distributorPhone" type="tel" maxlength="22" required placeholder="50688887777"></label>
+        <label>Código del enlace<input id="distributorCode" maxlength="48" pattern="[a-zA-Z0-9_-]+" placeholder="Se genera automáticamente"></label>
+        <label class="check full"><input id="distributorActive" type="checkbox" checked> Enlace activo</label>
+        <label class="full">Enlace para compartir<span class="link-output"><input id="distributorLink" readonly placeholder="Guarda para generar el enlace"><button id="copyDistributorLink" type="button">Copiar</button></span></label>
+      </div>
+      <div class="dialog-actions"><span class="message" id="distributorMessage"></span><button type="submit" class="primary">Guardar mayorista</button></div>
     </form>
   </dialog>
   <script src="/admin/admin.js" defer></script>

@@ -3,137 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ELITE COSTA RICA</title>
+    <title>PERFUMERÍA ORIGINAL</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="home-page">
-    <main class="home-scroll">
-        <section class="home-shell home-panel" aria-labelledby="home-title">
-            <div class="home-bg-carousel" aria-hidden="true">
-                <div class="home-bg-slide home-bg-perfumes active" style="background-image: url('assets/home-bg-perfumes-left.png');"></div>
-                <div class="home-bg-slide home-bg-gold" style="background-image: url('assets/home-bg-gold-right.png');"></div>
-            </div>
+<body class="catalog-page" data-page="catalog">
 
-            <div class="home-hero">
-            <img class="home-logo" src="assets/logo.png" alt="Elite Costa Rica">
-            <p class="home-kicker">LUJO A TU NIVEL</p>
-            <h1 id="home-title">Lo exclusivo te espera</h1>
-            <p class="home-copy">Selecciona una categoría y descubre lo mejor para tu nivel.</p>
+<header class="catalog-hero">
+    <div class="catalog-brand">
+        <h1 class="titulo">PERFUMERÍA ORIGINAL</h1>
+        <span>Tu perfume ideal está a un clic!</span>
+    </div>
 
-            <div class="home-actions" aria-label="Catalogos disponibles">
-                <a class="home-card" href="/catalogo">
-                    <span class="home-card-label">Perfumeria</span>
-                </a>
-                <a class="home-card home-card-gold" href="/oro">
-                    <span class="home-card-label">Oro 10k</span>
-                </a>
-            </div>
-            </div>
-        </section>
+    <div class="catalog-metrics" aria-label="Resumen del catálogo">
+        <span>♙ <strong id="catalogMetricProducts">2,484</strong> perfumes</span>
+        <span>⌁ <strong>130+</strong> marcas</span>
+        <span>▱ Envíos a todo Costa Rica</span>
+    </div>
 
-        <section class="home-testimonials home-panel" id="home-testimonials" aria-labelledby="home-testimonials-title">
-            <div class="home-testimonials-bg" aria-hidden="true">
-                <div class="home-testimonials-bg-slide active" style="background-image: url('assets/home-bg-satisfied-customers.png');"></div>
-                <div class="home-testimonials-bg-slide" style="background-image: url('assets/home-bg-satisfied-customers-2.png');"></div>
-            </div>
+    <div class="search-container">
+        <div class="search-box-wrapper">
+            <input id="search" type="search" placeholder="Buscar perfume, marca o inspiración...">
+            <button type="button" class="catalog-search-submit" aria-label="Buscar">⌕ <span>Buscar</span></button>
+        </div>
+    </div>
 
-            <div class="home-testimonials-head">
-                <img class="home-testimonials-logo" src="assets/logo.png" alt="Elite Costa Rica">
-                <p class="home-kicker">CLIENTES ELITE</p>
-                <h2 id="home-testimonials-title">Clientes Satisfechos</h2>
-                <p>Vea entregas reales y clientes satisfechos que ya compraron con nosotros.<br>Deslice y compruebe la confianza Elite.</p>
-                <a class="home-testimonials-link" href="/testimonios">Ver clientes satisfechos</a>
-            </div>
+    <div class="filtros-principales catalog-filter-grid">
+        <button class="tipo active" data-tipo="Todos"><span class="filter-icon">▦</span>Todos</button>
+        <button class="categoria" data-cat="Hombre"><span class="filter-icon">♙</span>Hombre</button>
+        <button class="categoria" data-cat="Mujer"><span class="filter-icon">♙</span>Mujer</button>
+        <button class="tipo" data-tipo="Arabes"><span class="filter-icon">◉</span>Árabes</button>
+        <button class="categoria" data-cat="Unisex"><span class="filter-icon">♧</span>Unisex</button>
+        <button class="tipo" data-tipo="Estuches"><span class="filter-icon">▣</span>Estuches</button>
+    </div>
 
-            <div class="home-years" id="homeYears"></div>
-        </section>
+    <h2 class="catalog-subtitle"><span></span>Marcas destacadas<span></span></h2>
+    <div class="contenedor-marcas-scroll">
+        <button class="flecha-scroll" onclick="scrollMarcas(-400)" aria-label="Marcas anteriores">‹</button>
+        <div id="contenedorMarcas" class="grid-marcas"></div>
+        <button class="flecha-scroll" onclick="scrollMarcas(400)" aria-label="Marcas siguientes">›</button>
+    </div>
 
-        <section class="home-advisor home-panel" id="home-advisor" aria-labelledby="home-advisor-title">
-            <div class="home-advisor-bg" aria-hidden="true">
-                <div class="home-advisor-bg-slide active" style="background-image: url('assets/home-bg-ai-advisor.png');"></div>
-                <div class="home-advisor-bg-slide" style="background-image: url('assets/home-bg-ai-advisor-2.png');"></div>
-            </div>
+</header>
 
-            <div class="home-advisor-shell">
-                <div class="home-advisor-head">
-                    <img class="home-advisor-logo" src="assets/logo.png" alt="Elite Costa Rica">
-                    <p class="home-kicker">ASESOR ELITE IA</p>
-                    <h2 id="home-advisor-title">Encuentra tu perfume ideal</h2>
-                    <p>No sabes cual perfume elegir?<br>Nuestro Asesor Elite IA encuentra opciones para ti segun tu estilo, ocasion y personalidad.</p>
+<div id="catalogFeaturedSections">
+    <section class="catalog-product-section" aria-labelledby="mostSearchedTitle">
+        <h2 class="catalog-section-title" id="mostSearchedTitle"><span></span>Más buscados<span></span></h2>
+        <div id="mostSearchedCatalog" class="catalog-product-grid"></div>
+    </section>
+    <section class="catalog-product-section" aria-labelledby="immediateTitle">
+        <h2 class="catalog-section-title" id="immediateTitle"><span></span>Disponibles Entrega Inmediata<span></span></h2>
+        <div id="immediateCatalog" class="catalog-product-grid"></div>
+    </section>
+</div>
+<h2 class="catalog-section-title catalog-results-title" id="catalogResultsTitle"><span></span>Resultados<span></span></h2>
+<div id="catalogo" class="catalog-product-grid"></div>
+<div id="loader">Cargando perfumes...</div>
+
+<div id="bot-modal">
+    <div class="bot-content">
+        <span onclick="cerrarBot()" class="close-bot">&times;</span>
+        
+        <div id="quiz-content">
+            <h2 id="pregunta-titulo">¿Para quién sería el perfume?</h2>
+            <div id="opciones-container">
                 </div>
+        </div>
 
-                <button class="home-advisor-cta" id="startAdvisor" type="button">Encuentra mi perfume</button>
-                <p class="home-advisor-note">Recomendaciones basadas en perfumes reales del catalogo Elite.</p>
-
-                <div class="home-advisor-quiz" id="homeAdvisorQuiz" hidden>
-                    <div class="home-advisor-progress" id="homeAdvisorProgress"></div>
-                    <h3 id="homeAdvisorQuestion">Pregunta</h3>
-                    <div class="home-advisor-options" id="homeAdvisorOptions"></div>
+        <div id="resultados-bot" style="display:none;">
+            <h2 class="resultado-titulo">🏆 Tus Matches Perfectos</h2>
+            <p class="resultado-subtitulo">Selección exclusiva basada en tus preferencias:</p>
+            <div id="lista-matches">
                 </div>
+            <button onclick="cerrarBot()" class="btn-volver">Volver al Catálogo</button>
+        </div>
+    </div>
+</div>
 
-                <div class="home-advisor-results" id="homeAdvisorResults" hidden>
-                    <div class="home-advisor-results-head">
-                        <p class="home-kicker">SELECCION ELITE</p>
-                        <h3>Perfumes recomendados</h3>
-                    </div>
-                    <div class="home-advisor-grid" id="homeAdvisorGrid"></div>
-                    <button class="home-advisor-reset" id="restartAdvisor" type="button">Probar de nuevo</button>
-                </div>
-            </div>
-        </section>
+<div id="visorImagen">
+    <article class="product-viewer-card" role="dialog" aria-modal="true" aria-labelledby="visorTitulo">
+        <div class="product-viewer-image-wrap">
+            <img id="imagenGrande" alt="">
+        </div>
+        <div class="product-viewer-info">
+            <span id="visorMarca"></span>
+            <h2 id="visorTitulo"></h2>
+            <p>Una fragancia seleccionada por Elite Parfums. Consulta disponibilidad y atención personalizada.</p>
+            <button id="visorCotizar" class="btn btn-cotizar-perfume">Cotizar</button>
+        </div>
+        <button id="cerrarVisor" type="button" aria-label="Cerrar">✕</button>
+    </article>
+</div>
 
-        <section class="home-contact home-panel" id="contactanos" aria-labelledby="home-contact-title">
-            <div class="home-contact-bg" aria-hidden="true">
-                <div class="home-contact-bg-slide active" style="background-image: url('assets/home-bg-contact-1.png');"></div>
-                <div class="home-contact-bg-slide" style="background-image: url('assets/home-bg-contact-2.png');"></div>
-            </div>
+<button id="btnArriba" title="Ir arriba">↑</button>
 
-            <div class="home-contact-shell">
-                <img class="home-contact-logo" src="assets/logo.png" alt="Elite Costa Rica">
-                <h2 id="home-contact-title">Contactanos</h2>
-
-                <div class="home-contact-card" aria-label="Opciones de ubicacion">
-                    <a class="home-contact-button" href="https://maps.app.goo.gl/w57HfAtnW5H4h6Zr8" target="_blank" rel="noopener">
-                        <img class="home-contact-icon" src="assets/social/googlemaps.png" alt="" aria-hidden="true">
-                        <span>Google Maps</span>
-                    </a>
-                    <a class="home-contact-button home-contact-button-waze" href="https://ul.waze.com/ul?place=ChIJ-62D42kxoI8RobtY2iZvmf8&ll=9.97307090%2C-84.72684920&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location" target="_blank" rel="noopener">
-                        <img class="home-contact-icon" src="assets/social/waze.png" alt="" aria-hidden="true">
-                        <span>Waze</span>
-                    </a>
-
-                    <div class="home-socials" aria-label="Redes sociales">
-                        <a class="home-social-card home-social-instagram" href="https://www.instagram.com/elitecostarica" target="_blank" rel="noopener">
-                            <img class="home-social-mark" src="assets/social/instagram.png" alt="" aria-hidden="true">
-                            <span class="home-social-copy">
-                                <strong>Instagram</strong>
-                                <small>@elitecostarica</small>
-                            </span>
-                        </a>
-                        <a class="home-social-card home-social-tiktok" href="https://www.tiktok.com/@elitecostarica" target="_blank" rel="noopener">
-                            <img class="home-social-mark" src="assets/social/tiktok.png" alt="" aria-hidden="true">
-                            <span class="home-social-copy">
-                                <strong>TikTok</strong>
-                                <small>@elitecostarica</small>
-                            </span>
-                        </a>
-                        <a class="home-social-card home-social-whatsapp" href="https://wa.me/50662104761" target="_blank" rel="noopener">
-                            <img class="home-social-mark" src="assets/social/whatsapp.png" alt="" aria-hidden="true">
-                            <span class="home-social-copy">
-                                <strong>WhatsApp</strong>
-                                <small>+506 6210 4761</small>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <script src="home.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>
